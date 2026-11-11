@@ -200,6 +200,20 @@ h1 { text-align: center; margin: 4px 0 0; font-size: 34px; letter-spacing: .01em
 #keyInput:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 #btnUnlock { min-height: 54px; font-size: 18px; }
 
+.room-code {
+  font: 800 40px ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .18em; text-align: center;
+  background: rgba(0, 0, 0, .25); border-radius: 14px; padding: 14px 8px; margin: 8px 0 12px; color: var(--accent);
+}
+.code-input {
+  font: 800 30px ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .2em; text-align: center; text-transform: uppercase;
+  width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0, 0, 0, .3); color: var(--text);
+}
+.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--muted); margin: 12px 0; }
+.field input {
+  font: 16px -apple-system, system-ui, sans-serif; padding: 12px; border-radius: 12px; border: 1px solid var(--line);
+  background: rgba(0, 0, 0, .3); color: var(--text);
+}
+
 /* ---------------------------------------------------------------- bars */
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px; min-height: 48px; }
 .bar-title { flex: 1; text-align: center; font-size: 14px; color: var(--muted); display: flex; gap: 10px; justify-content: center; }
@@ -445,6 +459,7 @@ h1 { text-align: center; margin: 4px 0 0; font-size: 34px; letter-spacing: .01em
     <div class="home-buttons">
       <button id="btnResume" class="primary" hidden>Resume game</button>
       <button id="btnPlay" class="primary">New game</button>
+      <button id="btnTogether">Play together</button>
       <button id="btnTutorial">Tutorial</button>
       <div class="row2">
         <button id="btnHomeCard">The card</button>
@@ -532,6 +547,17 @@ h1 { text-align: center; margin: 4px 0 0; font-size: 34px; letter-spacing: .01em
 <div id="toast" class="toast" hidden></div>
 
 <script>
+/*! PeerJS 1.5.5 (https://peerjs.com), MIT License, Copyright (c) 2015 Michelle Bu and Eric Zhang. Vendored unmodified except for the source-map comment; full license in vendor/PEERJS-LICENSE. */
+(()=>{function e(e,t,n,r){Object.defineProperty(e,t,{get:n,set:r,enumerable:!0,configurable:!0})}function t(e){return e&&e.__esModule?e.default:e}class n{constructor(){this.chunkedMTU=16300,this._dataCount=1,this.chunk=e=>{let t=[],n=e.byteLength,r=Math.ceil(n/this.chunkedMTU),i=0,s=0;for(;s<n;){let o=Math.min(n,s+this.chunkedMTU),a=e.slice(s,o),c={__peerData:this._dataCount,n:i,data:a,total:r};t.push(c),s=o,i++}return this._dataCount++,t}}}class r{append_buffer(e){this.flush(),this._parts.push(e)}append(e){this._pieces.push(e)}flush(){if(this._pieces.length>0){let e=new Uint8Array(this._pieces);this._parts.push(e),this._pieces=[]}}toArrayBuffer(){let e=[];for(let t of this._parts)e.push(t);return function(e){let t=0;for(let n of e)t+=n.byteLength;let n=new Uint8Array(t),r=0;for(let t of e){let e=new Uint8Array(t.buffer,t.byteOffset,t.byteLength);n.set(e,r),r+=t.byteLength}return n}(e).buffer}constructor(){this.encoder=new TextEncoder,this._pieces=[],this._parts=[]}}function i(e){return new o(e).unpack()}function s(e){let t=new a,n=t.pack(e);return n instanceof Promise?n.then(()=>t.getBuffer()):t.getBuffer()}class o{unpack(){let e,t=this.unpack_uint8();if(t<128)return t;if((224^t)<32)return(224^t)-32;if((e=160^t)<=15)return this.unpack_raw(e);if((e=176^t)<=15)return this.unpack_string(e);if((e=144^t)<=15)return this.unpack_array(e);if((e=128^t)<=15)return this.unpack_map(e);switch(t){case 192:return null;case 193:case 212:case 213:case 214:case 215:return;case 194:return!1;case 195:return!0;case 202:return this.unpack_float();case 203:return this.unpack_double();case 204:return this.unpack_uint8();case 205:return this.unpack_uint16();case 206:return this.unpack_uint32();case 207:return this.unpack_uint64();case 208:return this.unpack_int8();case 209:return this.unpack_int16();case 210:return this.unpack_int32();case 211:return this.unpack_int64();case 216:return e=this.unpack_uint16(),this.unpack_string(e);case 217:return e=this.unpack_uint32(),this.unpack_string(e);case 218:return e=this.unpack_uint16(),this.unpack_raw(e);case 219:return e=this.unpack_uint32(),this.unpack_raw(e);case 220:return e=this.unpack_uint16(),this.unpack_array(e);case 221:return e=this.unpack_uint32(),this.unpack_array(e);case 222:return e=this.unpack_uint16(),this.unpack_map(e);case 223:return e=this.unpack_uint32(),this.unpack_map(e)}}unpack_uint8(){let e=255&this.dataView[this.index];return this.index++,e}unpack_uint16(){let e=this.read(2),t=(255&e[0])*256+(255&e[1]);return this.index+=2,t}unpack_uint32(){let e=this.read(4),t=((256*e[0]+e[1])*256+e[2])*256+e[3];return this.index+=4,t}unpack_uint64(){let e=this.read(8),t=((((((256*e[0]+e[1])*256+e[2])*256+e[3])*256+e[4])*256+e[5])*256+e[6])*256+e[7];return this.index+=8,t}unpack_int8(){let e=this.unpack_uint8();return e<128?e:e-256}unpack_int16(){let e=this.unpack_uint16();return e<32768?e:e-65536}unpack_int32(){let e=this.unpack_uint32();return e<0x80000000?e:e-0x100000000}unpack_int64(){let e=this.unpack_uint64();return e<0x8000000000000000?e:e-0xffffffffffffffff}unpack_raw(e){if(this.length<this.index+e)throw Error(`BinaryPackFailure: index is out of range ${this.index} ${e} ${this.length}`);let t=this.dataBuffer.slice(this.index,this.index+e);return this.index+=e,t}unpack_string(e){let t,n,r=this.read(e),i=0,s="";for(;i<e;)(t=r[i])<160?(n=t,i++):(192^t)<32?(n=(31&t)<<6|63&r[i+1],i+=2):(224^t)<16?(n=(15&t)<<12|(63&r[i+1])<<6|63&r[i+2],i+=3):(n=(7&t)<<18|(63&r[i+1])<<12|(63&r[i+2])<<6|63&r[i+3],i+=4),s+=String.fromCodePoint(n);return this.index+=e,s}unpack_array(e){let t=Array(e);for(let n=0;n<e;n++)t[n]=this.unpack();return t}unpack_map(e){let t={};for(let n=0;n<e;n++)t[this.unpack()]=this.unpack();return t}unpack_float(){let e=this.unpack_uint32();return(0==e>>31?1:-1)*(8388607&e|8388608)*2**((e>>23&255)-127-23)}unpack_double(){let e=this.unpack_uint32(),t=this.unpack_uint32(),n=(e>>20&2047)-1023;return(0==e>>31?1:-1)*((1048575&e|1048576)*2**(n-20)+t*2**(n-52))}read(e){let t=this.index;if(t+e<=this.length)return this.dataView.subarray(t,t+e);throw Error("BinaryPackFailure: read index out of range")}constructor(e){this.index=0,this.dataBuffer=e,this.dataView=new Uint8Array(this.dataBuffer),this.length=this.dataBuffer.byteLength}}class a{getBuffer(){return this._bufferBuilder.toArrayBuffer()}pack(e){if("string"==typeof e)this.pack_string(e);else if("number"==typeof e)Math.floor(e)===e?this.pack_integer(e):this.pack_double(e);else if("boolean"==typeof e)!0===e?this._bufferBuilder.append(195):!1===e&&this._bufferBuilder.append(194);else if(void 0===e)this._bufferBuilder.append(192);else if("object"==typeof e)if(null===e)this._bufferBuilder.append(192);else{let t=e.constructor;if(e instanceof Array){let t=this.pack_array(e);if(t instanceof Promise)return t.then(()=>this._bufferBuilder.flush())}else if(e instanceof ArrayBuffer)this.pack_bin(new Uint8Array(e));else if("BYTES_PER_ELEMENT"in e)this.pack_bin(new Uint8Array(e.buffer,e.byteOffset,e.byteLength));else if(e instanceof Date)this.pack_string(e.toString());else if(e instanceof Blob)return e.arrayBuffer().then(e=>{this.pack_bin(new Uint8Array(e)),this._bufferBuilder.flush()});else if(t==Object||t.toString().startsWith("class")){let t=this.pack_object(e);if(t instanceof Promise)return t.then(()=>this._bufferBuilder.flush())}else throw Error(`Type "${t.toString()}" not yet supported`)}else throw Error(`Type "${typeof e}" not yet supported`);this._bufferBuilder.flush()}pack_bin(e){let t=e.length;if(t<=15)this.pack_uint8(160+t);else if(t<=65535)this._bufferBuilder.append(218),this.pack_uint16(t);else if(t<=0xffffffff)this._bufferBuilder.append(219),this.pack_uint32(t);else throw Error("Invalid length");this._bufferBuilder.append_buffer(e)}pack_string(e){let t=this._textEncoder.encode(e),n=t.length;if(n<=15)this.pack_uint8(176+n);else if(n<=65535)this._bufferBuilder.append(216),this.pack_uint16(n);else if(n<=0xffffffff)this._bufferBuilder.append(217),this.pack_uint32(n);else throw Error("Invalid length");this._bufferBuilder.append_buffer(t)}pack_array(e){let t=e.length;if(t<=15)this.pack_uint8(144+t);else if(t<=65535)this._bufferBuilder.append(220),this.pack_uint16(t);else if(t<=0xffffffff)this._bufferBuilder.append(221),this.pack_uint32(t);else throw Error("Invalid length");let n=r=>{if(r<t){let t=this.pack(e[r]);return t instanceof Promise?t.then(()=>n(r+1)):n(r+1)}};return n(0)}pack_integer(e){if(e>=-32&&e<=127)this._bufferBuilder.append(255&e);else if(e>=0&&e<=255)this._bufferBuilder.append(204),this.pack_uint8(e);else if(e>=-128&&e<=127)this._bufferBuilder.append(208),this.pack_int8(e);else if(e>=0&&e<=65535)this._bufferBuilder.append(205),this.pack_uint16(e);else if(e>=-32768&&e<=32767)this._bufferBuilder.append(209),this.pack_int16(e);else if(e>=0&&e<=0xffffffff)this._bufferBuilder.append(206),this.pack_uint32(e);else if(e>=-0x80000000&&e<=0x7fffffff)this._bufferBuilder.append(210),this.pack_int32(e);else if(e>=-0x8000000000000000&&e<=0x8000000000000000)this._bufferBuilder.append(211),this.pack_int64(e);else if(e>=0&&e<=0xffffffffffffffff)this._bufferBuilder.append(207),this.pack_uint64(e);else throw Error("Invalid integer")}pack_double(e){let t=0;e<0&&(t=1,e=-e);let n=Math.floor(Math.log(e)/Math.LN2),r=Math.floor((e/2**n-1)*0x10000000000000),i=t<<31|n+1023<<20|r/0x100000000&1048575;this._bufferBuilder.append(203),this.pack_int32(i),this.pack_int32(r%0x100000000)}pack_object(e){let t=Object.keys(e),n=t.length;if(n<=15)this.pack_uint8(128+n);else if(n<=65535)this._bufferBuilder.append(222),this.pack_uint16(n);else if(n<=0xffffffff)this._bufferBuilder.append(223),this.pack_uint32(n);else throw Error("Invalid length");let r=n=>{if(n<t.length){let i=t[n];if(e.hasOwnProperty(i)){this.pack(i);let t=this.pack(e[i]);if(t instanceof Promise)return t.then(()=>r(n+1))}return r(n+1)}};return r(0)}pack_uint8(e){this._bufferBuilder.append(e)}pack_uint16(e){this._bufferBuilder.append(e>>8),this._bufferBuilder.append(255&e)}pack_uint32(e){let t=0|e;this._bufferBuilder.append((0xff000000&t)>>>24),this._bufferBuilder.append((0xff0000&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t)}pack_uint64(e){let t=e/0x100000000,n=e%0x100000000;this._bufferBuilder.append((0xff000000&t)>>>24),this._bufferBuilder.append((0xff0000&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t),this._bufferBuilder.append((0xff000000&n)>>>24),this._bufferBuilder.append((0xff0000&n)>>>16),this._bufferBuilder.append((65280&n)>>>8),this._bufferBuilder.append(255&n)}pack_int8(e){this._bufferBuilder.append(255&e)}pack_int16(e){this._bufferBuilder.append((65280&e)>>8),this._bufferBuilder.append(255&e)}pack_int32(e){this._bufferBuilder.append(e>>>24&255),this._bufferBuilder.append((0xff0000&e)>>>16),this._bufferBuilder.append((65280&e)>>>8),this._bufferBuilder.append(255&e)}pack_int64(e){let t=Math.floor(e/0x100000000),n=e%0x100000000;this._bufferBuilder.append((0xff000000&t)>>>24),this._bufferBuilder.append((0xff0000&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t),this._bufferBuilder.append((0xff000000&n)>>>24),this._bufferBuilder.append((0xff0000&n)>>>16),this._bufferBuilder.append((65280&n)>>>8),this._bufferBuilder.append(255&n)}constructor(){this._bufferBuilder=new r,this._textEncoder=new TextEncoder}}"use strict";let c=!0,p=!0;function d(e,t,n){let r=e.match(t);return r&&r.length>=n&&parseInt(r[n],10)}function l(e,t,n){if(!e.RTCPeerConnection)return;let r=e.RTCPeerConnection.prototype,i=r.addEventListener;r.addEventListener=function(e,r){if(e!==t)return i.apply(this,arguments);let s=e=>{let t=n(e);t&&(r.handleEvent?r.handleEvent(t):r(t))};return this._eventMap=this._eventMap||{},this._eventMap[t]||(this._eventMap[t]=new Map),this._eventMap[t].set(r,s),i.apply(this,[e,s])};let s=r.removeEventListener;r.removeEventListener=function(e,n){if(e!==t||!this._eventMap||!this._eventMap[t]||!this._eventMap[t].has(n))return s.apply(this,arguments);let r=this._eventMap[t].get(n);return this._eventMap[t].delete(n),0===this._eventMap[t].size&&delete this._eventMap[t],0===Object.keys(this._eventMap).length&&delete this._eventMap,s.apply(this,[e,r])},Object.defineProperty(r,"on"+t,{get(){return this["_on"+t]},set(e){this["_on"+t]&&(this.removeEventListener(t,this["_on"+t]),delete this["_on"+t]),e&&this.addEventListener(t,this["_on"+t]=e)},enumerable:!0,configurable:!0})}function h(e){return"boolean"!=typeof e?Error("Argument type: "+typeof e+". Please use a boolean."):(c=e,e?"adapter.js logging disabled":"adapter.js logging enabled")}function u(e){return"boolean"!=typeof e?Error("Argument type: "+typeof e+". Please use a boolean."):(p=!e,"adapter.js deprecation warnings "+(e?"disabled":"enabled"))}function f(){"object"==typeof window&&(c||"undefined"!=typeof console&&"function"==typeof console.log&&console.log.apply(console,arguments))}function m(e,t){p&&console.warn(e+" is deprecated, please use "+t+" instead.")}function _(e){return"[object Object]"===Object.prototype.toString.call(e)}function g(e,t,n){let r=n?"outbound-rtp":"inbound-rtp",i=new Map;if(null===t)return i;let s=[];return e.forEach(e=>{"track"===e.type&&e.trackIdentifier===t.id&&s.push(e)}),s.forEach(t=>{e.forEach(n=>{n.type===r&&n.trackId===t.id&&function e(t,n,r){!n||r.has(n.id)||(r.set(n.id,n),Object.keys(n).forEach(i=>{i.endsWith("Id")?e(t,t.get(n[i]),r):i.endsWith("Ids")&&n[i].forEach(n=>{e(t,t.get(n),r)})}))}(e,n,i)})}),i}"use strict";var y={};function C(e,t){let n=e&&e.navigator;if(!n.mediaDevices)return;let r=function(e){if("object"!=typeof e||e.mandatory||e.optional)return e;let t={};return Object.keys(e).forEach(n=>{if("require"===n||"advanced"===n||"mediaSource"===n)return;let r="object"==typeof e[n]?e[n]:{ideal:e[n]};void 0!==r.exact&&"number"==typeof r.exact&&(r.min=r.max=r.exact);let i=function(e,t){return e?e+t.charAt(0).toUpperCase()+t.slice(1):"deviceId"===t?"sourceId":t};if(void 0!==r.ideal){t.optional=t.optional||[];let e={};"number"==typeof r.ideal?(e[i("min",n)]=r.ideal,t.optional.push(e),(e={})[i("max",n)]=r.ideal):e[i("",n)]=r.ideal,t.optional.push(e)}void 0!==r.exact&&"number"!=typeof r.exact?(t.mandatory=t.mandatory||{},t.mandatory[i("",n)]=r.exact):["min","max"].forEach(e=>{void 0!==r[e]&&(t.mandatory=t.mandatory||{},t.mandatory[i(e,n)]=r[e])})}),e.advanced&&(t.optional=(t.optional||[]).concat(e.advanced)),t},i=function(e,i){if(t.version>=61)return i(e);if((e=JSON.parse(JSON.stringify(e)))&&"object"==typeof e.audio){let t=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])};t((e=JSON.parse(JSON.stringify(e))).audio,"autoGainControl","googAutoGainControl"),t(e.audio,"noiseSuppression","googNoiseSuppression"),e.audio=r(e.audio)}if(e&&"object"==typeof e.video){let s=e.video.facingMode;s=s&&("object"==typeof s?s:{ideal:s});let o=t.version<66;if(s&&("user"===s.exact||"environment"===s.exact||"user"===s.ideal||"environment"===s.ideal)&&!(n.mediaDevices.getSupportedConstraints&&n.mediaDevices.getSupportedConstraints().facingMode&&!o)){let t;if(delete e.video.facingMode,"environment"===s.exact||"environment"===s.ideal?t=["back","rear"]:("user"===s.exact||"user"===s.ideal)&&(t=["front"]),t)return n.mediaDevices.enumerateDevices().then(n=>{let o=(n=n.filter(e=>"videoinput"===e.kind)).find(e=>t.some(t=>e.label.toLowerCase().includes(t)));return!o&&n.length&&t.includes("back")&&(o=n[n.length-1]),o&&(e.video.deviceId=s.exact?{exact:o.deviceId}:{ideal:o.deviceId}),e.video=r(e.video),f("chrome: "+JSON.stringify(e)),i(e)})}e.video=r(e.video)}return f("chrome: "+JSON.stringify(e)),i(e)},s=function(e){return t.version>=64?e:{name:({PermissionDeniedError:"NotAllowedError",PermissionDismissedError:"NotAllowedError",InvalidStateError:"NotAllowedError",DevicesNotFoundError:"NotFoundError",ConstraintNotSatisfiedError:"OverconstrainedError",TrackStartError:"NotReadableError",MediaDeviceFailedDueToShutdown:"NotAllowedError",MediaDeviceKillSwitchOn:"NotAllowedError",TabCaptureError:"AbortError",ScreenCaptureError:"AbortError",DeviceCaptureError:"AbortError"})[e.name]||e.name,message:e.message,constraint:e.constraint||e.constraintName,toString(){return this.name+(this.message&&": ")+this.message}}};if(n.getUserMedia=(function(e,t,r){i(e,e=>{n.webkitGetUserMedia(e,t,e=>{r&&r(s(e))})})}).bind(n),n.mediaDevices.getUserMedia){let e=n.mediaDevices.getUserMedia.bind(n.mediaDevices);n.mediaDevices.getUserMedia=function(t){return i(t,t=>e(t).then(e=>{if(t.audio&&!e.getAudioTracks().length||t.video&&!e.getVideoTracks().length)throw e.getTracks().forEach(e=>{e.stop()}),new DOMException("","NotFoundError");return e},e=>Promise.reject(s(e))))}}}"use strict";function v(e){e.MediaStream=e.MediaStream||e.webkitMediaStream}function b(e){if("object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype)l(e,"track",e=>(e.transceiver||Object.defineProperty(e,"transceiver",{value:{receiver:e.receiver}}),e));else{Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get(){return this._ontrack},set(e){this._ontrack&&this.removeEventListener("track",this._ontrack),this.addEventListener("track",this._ontrack=e)},enumerable:!0,configurable:!0});let t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){return this._ontrackpoly||(this._ontrackpoly=t=>{t.stream.addEventListener("addtrack",n=>{let r;r=e.RTCPeerConnection.prototype.getReceivers?this.getReceivers().find(e=>e.track&&e.track.id===n.track.id):{track:n.track};let i=new Event("track");i.track=n.track,i.receiver=r,i.transceiver={receiver:r},i.streams=[t.stream],this.dispatchEvent(i)}),t.stream.getTracks().forEach(n=>{let r;r=e.RTCPeerConnection.prototype.getReceivers?this.getReceivers().find(e=>e.track&&e.track.id===n.id):{track:n};let i=new Event("track");i.track=n,i.receiver=r,i.transceiver={receiver:r},i.streams=[t.stream],this.dispatchEvent(i)})},this.addEventListener("addstream",this._ontrackpoly)),t.apply(this,arguments)}}}function T(e){if("object"==typeof e&&e.RTCPeerConnection&&!("getSenders"in e.RTCPeerConnection.prototype)&&"createDTMFSender"in e.RTCPeerConnection.prototype){let t=function(e,t){return{track:t,get dtmf(){return void 0===this._dtmf&&("audio"===t.kind?this._dtmf=e.createDTMFSender(t):this._dtmf=null),this._dtmf},_pc:e}};if(!e.RTCPeerConnection.prototype.getSenders){e.RTCPeerConnection.prototype.getSenders=function(){return this._senders=this._senders||[],this._senders.slice()};let n=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,r){let i=n.apply(this,arguments);return i||(i=t(this,e),this._senders.push(i)),i};let r=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){r.apply(this,arguments);let t=this._senders.indexOf(e);-1!==t&&this._senders.splice(t,1)}}let n=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){this._senders=this._senders||[],n.apply(this,[e]),e.getTracks().forEach(e=>{this._senders.push(t(this,e))})};let r=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){this._senders=this._senders||[],r.apply(this,[e]),e.getTracks().forEach(e=>{let t=this._senders.find(t=>t.track===e);t&&this._senders.splice(this._senders.indexOf(t),1)})}}else if("object"==typeof e&&e.RTCPeerConnection&&"getSenders"in e.RTCPeerConnection.prototype&&"createDTMFSender"in e.RTCPeerConnection.prototype&&e.RTCRtpSender&&!("dtmf"in e.RTCRtpSender.prototype)){let t=e.RTCPeerConnection.prototype.getSenders;e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e},Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=this._pc.createDTMFSender(this.track):this._dtmf=null),this._dtmf}})}}function S(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&e.RTCRtpReceiver))return;if(!("getStats"in e.RTCRtpSender.prototype)){let t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e});let n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){let e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){let e=this;return this._pc.getStats().then(t=>g(t,e.track,!0))}}if(!("getStats"in e.RTCRtpReceiver.prototype)){let t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e}),l(e,"track",e=>(e.receiver._pc=e.srcElement,e)),e.RTCRtpReceiver.prototype.getStats=function(){let e=this;return this._pc.getStats().then(t=>g(t,e.track,!1))}}if(!("getStats"in e.RTCRtpSender.prototype&&"getStats"in e.RTCRtpReceiver.prototype))return;let t=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){if(arguments.length>0&&arguments[0]instanceof e.MediaStreamTrack){let e,t,n,r=arguments[0];return(this.getSenders().forEach(t=>{t.track===r&&(e?n=!0:e=t)}),this.getReceivers().forEach(e=>(e.track===r&&(t?n=!0:t=e),e.track===r)),n||e&&t)?Promise.reject(new DOMException("There are more than one sender or receiver for the track.","InvalidAccessError")):e?e.getStats():t?t.getStats():Promise.reject(new DOMException("There is no sender or receiver for the track.","InvalidAccessError"))}return t.apply(this,arguments)}}function k(e){e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},Object.keys(this._shimmedLocalStreams).map(e=>this._shimmedLocalStreams[e][0])};let t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,n){if(!n)return t.apply(this,arguments);this._shimmedLocalStreams=this._shimmedLocalStreams||{};let r=t.apply(this,arguments);return this._shimmedLocalStreams[n.id]?-1===this._shimmedLocalStreams[n.id].indexOf(r)&&this._shimmedLocalStreams[n.id].push(r):this._shimmedLocalStreams[n.id]=[n,r],r};let n=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){this._shimmedLocalStreams=this._shimmedLocalStreams||{},e.getTracks().forEach(e=>{if(this.getSenders().find(t=>t.track===e))throw new DOMException("Track already exists.","InvalidAccessError")});let t=this.getSenders();n.apply(this,arguments);let r=this.getSenders().filter(e=>-1===t.indexOf(e));this._shimmedLocalStreams[e.id]=[e].concat(r)};let r=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},delete this._shimmedLocalStreams[e.id],r.apply(this,arguments)};let i=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},e&&Object.keys(this._shimmedLocalStreams).forEach(t=>{let n=this._shimmedLocalStreams[t].indexOf(e);-1!==n&&this._shimmedLocalStreams[t].splice(n,1),1===this._shimmedLocalStreams[t].length&&delete this._shimmedLocalStreams[t]}),i.apply(this,arguments)}}function R(e,t){if(!e.RTCPeerConnection)return;if(e.RTCPeerConnection.prototype.addTrack&&t.version>=65)return k(e);let n=e.RTCPeerConnection.prototype.getLocalStreams;e.RTCPeerConnection.prototype.getLocalStreams=function(){let e=n.apply(this);return this._reverseStreams=this._reverseStreams||{},e.map(e=>this._reverseStreams[e.id])};let r=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(t){if(this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{},t.getTracks().forEach(e=>{if(this.getSenders().find(t=>t.track===e))throw new DOMException("Track already exists.","InvalidAccessError")}),!this._reverseStreams[t.id]){let n=new e.MediaStream(t.getTracks());this._streams[t.id]=n,this._reverseStreams[n.id]=t,t=n}r.apply(this,[t])};let i=e.RTCPeerConnection.prototype.removeStream;function s(e,t){let n=t.sdp;return Object.keys(e._reverseStreams||[]).forEach(t=>{let r=e._reverseStreams[t],i=e._streams[r.id];n=n.replace(RegExp(i.id,"g"),r.id)}),new RTCSessionDescription({type:t.type,sdp:n})}e.RTCPeerConnection.prototype.removeStream=function(e){this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{},i.apply(this,[this._streams[e.id]||e]),delete this._reverseStreams[this._streams[e.id]?this._streams[e.id].id:e.id],delete this._streams[e.id]},e.RTCPeerConnection.prototype.addTrack=function(t,n){if("closed"===this.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");let r=[].slice.call(arguments,1);if(1!==r.length||!r[0].getTracks().find(e=>e===t))throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.","NotSupportedError");if(this.getSenders().find(e=>e.track===t))throw new DOMException("Track already exists.","InvalidAccessError");this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{};let i=this._streams[n.id];if(i)i.addTrack(t),Promise.resolve().then(()=>{this.dispatchEvent(new Event("negotiationneeded"))});else{let r=new e.MediaStream([t]);this._streams[n.id]=r,this._reverseStreams[r.id]=n,this.addStream(r)}return this.getSenders().find(e=>e.track===t)},["createOffer","createAnswer"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){let e=arguments,t=arguments.length&&"function"==typeof arguments[0];return t?n.apply(this,[t=>{let n=s(this,t);e[0].apply(null,[n])},t=>{e[1]&&e[1].apply(null,t)},arguments[2]]):n.apply(this,arguments).then(e=>s(this,e))}})[t]});let o=e.RTCPeerConnection.prototype.setLocalDescription;e.RTCPeerConnection.prototype.setLocalDescription=function(){var e,t;let n;return arguments.length&&arguments[0].type?(arguments[0]=(e=this,t=arguments[0],n=t.sdp,Object.keys(e._reverseStreams||[]).forEach(t=>{let r=e._reverseStreams[t],i=e._streams[r.id];n=n.replace(RegExp(r.id,"g"),i.id)}),new RTCSessionDescription({type:t.type,sdp:n})),o.apply(this,arguments)):o.apply(this,arguments)};let a=Object.getOwnPropertyDescriptor(e.RTCPeerConnection.prototype,"localDescription");Object.defineProperty(e.RTCPeerConnection.prototype,"localDescription",{get(){let e=a.get.apply(this);return""===e.type?e:s(this,e)}}),e.RTCPeerConnection.prototype.removeTrack=function(e){let t;if("closed"===this.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");if(!e._pc)throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.","TypeError");if(e._pc!==this)throw new DOMException("Sender was not created by this connection.","InvalidAccessError");this._streams=this._streams||{},Object.keys(this._streams).forEach(n=>{this._streams[n].getTracks().find(t=>e.track===t)&&(t=this._streams[n])}),t&&(1===t.getTracks().length?this.removeStream(this._reverseStreams[t.id]):t.removeTrack(e.track),this.dispatchEvent(new Event("negotiationneeded")))}}function P(e,t){!e.RTCPeerConnection&&e.webkitRTCPeerConnection&&(e.RTCPeerConnection=e.webkitRTCPeerConnection),e.RTCPeerConnection&&t.version<53&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}})[t]})}function w(e,t){l(e,"negotiationneeded",e=>{let n=e.target;if(!(t.version<72)&&(!n.getConfiguration||"plan-b"!==n.getConfiguration().sdpSemantics)||"stable"===n.signalingState)return e})}"use strict";e(y,"shimMediaStream",()=>v),e(y,"shimOnTrack",()=>b),e(y,"shimGetSendersWithDtmf",()=>T),e(y,"shimSenderReceiverGetStats",()=>S),e(y,"shimAddTrackRemoveTrackWithNative",()=>k),e(y,"shimAddTrackRemoveTrack",()=>R),e(y,"shimPeerConnection",()=>P),e(y,"fixNegotiationNeeded",()=>w),e(y,"shimGetUserMedia",()=>C);var E={};function x(e,t){let n=e&&e.navigator,r=e&&e.MediaStreamTrack;if(n.getUserMedia=function(e,t,r){m("navigator.getUserMedia","navigator.mediaDevices.getUserMedia"),n.mediaDevices.getUserMedia(e).then(t,r)},!(t.version>55&&"autoGainControl"in n.mediaDevices.getSupportedConstraints())){let e=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])},t=n.mediaDevices.getUserMedia.bind(n.mediaDevices);if(n.mediaDevices.getUserMedia=function(n){return"object"==typeof n&&"object"==typeof n.audio&&(e((n=JSON.parse(JSON.stringify(n))).audio,"autoGainControl","mozAutoGainControl"),e(n.audio,"noiseSuppression","mozNoiseSuppression")),t(n)},r&&r.prototype.getSettings){let t=r.prototype.getSettings;r.prototype.getSettings=function(){let n=t.apply(this,arguments);return e(n,"mozAutoGainControl","autoGainControl"),e(n,"mozNoiseSuppression","noiseSuppression"),n}}if(r&&r.prototype.applyConstraints){let t=r.prototype.applyConstraints;r.prototype.applyConstraints=function(n){return"audio"===this.kind&&"object"==typeof n&&(e(n=JSON.parse(JSON.stringify(n)),"autoGainControl","mozAutoGainControl"),e(n,"noiseSuppression","mozNoiseSuppression")),t.apply(this,[n])}}}}"use strict";function D(e,t){e.navigator.mediaDevices&&"getDisplayMedia"in e.navigator.mediaDevices||e.navigator.mediaDevices&&(e.navigator.mediaDevices.getDisplayMedia=function(n){if(!(n&&n.video)){let e=new DOMException("getDisplayMedia without video constraints is undefined");return e.name="NotFoundError",e.code=8,Promise.reject(e)}return!0===n.video?n.video={mediaSource:t}:n.video.mediaSource=t,e.navigator.mediaDevices.getUserMedia(n)})}"use strict";function I(e){"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get(){return{receiver:this.receiver}}})}function M(e,t){if("object"!=typeof e||!(e.RTCPeerConnection||e.mozRTCPeerConnection))return;!e.RTCPeerConnection&&e.mozRTCPeerConnection&&(e.RTCPeerConnection=e.mozRTCPeerConnection),t.version<53&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}})[t]});let n={inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"},r=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){let[e,i,s]=arguments;return r.apply(this,[e||null]).then(e=>{if(t.version<53&&!i)try{e.forEach(e=>{e.type=n[e.type]||e.type})}catch(t){if("TypeError"!==t.name)throw t;e.forEach((t,r)=>{e.set(r,Object.assign({},t,{type:n[t.type]||t.type}))})}return e}).then(i,s)}}function O(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender)||e.RTCRtpSender&&"getStats"in e.RTCRtpSender.prototype)return;let t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e});let n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){let e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){return this.track?this._pc.getStats(this.track):Promise.resolve(new Map)}}function L(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender)||e.RTCRtpSender&&"getStats"in e.RTCRtpReceiver.prototype)return;let t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e}),l(e,"track",e=>(e.receiver._pc=e.srcElement,e)),e.RTCRtpReceiver.prototype.getStats=function(){return this._pc.getStats(this.track)}}function A(e){!e.RTCPeerConnection||"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){m("removeStream","removeTrack"),this.getSenders().forEach(t=>{t.track&&e.getTracks().includes(t.track)&&this.removeTrack(t)})})}function j(e){e.DataChannel&&!e.RTCDataChannel&&(e.RTCDataChannel=e.DataChannel)}function B(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.addTransceiver;t&&(e.RTCPeerConnection.prototype.addTransceiver=function(){this.setParametersPromises=[];let e=arguments[1]&&arguments[1].sendEncodings;void 0===e&&(e=[]);let n=(e=[...e]).length>0;n&&e.forEach(e=>{if("rid"in e&&!/^[a-z0-9]{0,16}$/i.test(e.rid))throw TypeError("Invalid RID value provided.");if("scaleResolutionDownBy"in e&&!(parseFloat(e.scaleResolutionDownBy)>=1))throw RangeError("scale_resolution_down_by must be >= 1.0");if("maxFramerate"in e&&!(parseFloat(e.maxFramerate)>=0))throw RangeError("max_framerate must be >= 0.0")});let r=t.apply(this,arguments);if(n){let{sender:t}=r,n=t.getParameters();"encodings"in n&&(1!==n.encodings.length||0!==Object.keys(n.encodings[0]).length)||(n.encodings=e,t.sendEncodings=e,this.setParametersPromises.push(t.setParameters(n).then(()=>{delete t.sendEncodings}).catch(()=>{delete t.sendEncodings})))}return r})}function U(e){if(!("object"==typeof e&&e.RTCRtpSender))return;let t=e.RTCRtpSender.prototype.getParameters;t&&(e.RTCRtpSender.prototype.getParameters=function(){let e=t.apply(this,arguments);return"encodings"in e||(e.encodings=[].concat(this.sendEncodings||[{}])),e})}function F(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(){return this.setParametersPromises&&this.setParametersPromises.length?Promise.all(this.setParametersPromises).then(()=>t.apply(this,arguments)).finally(()=>{this.setParametersPromises=[]}):t.apply(this,arguments)}}function N(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.createAnswer;e.RTCPeerConnection.prototype.createAnswer=function(){return this.setParametersPromises&&this.setParametersPromises.length?Promise.all(this.setParametersPromises).then(()=>t.apply(this,arguments)).finally(()=>{this.setParametersPromises=[]}):t.apply(this,arguments)}}"use strict";e(E,"shimOnTrack",()=>I),e(E,"shimPeerConnection",()=>M),e(E,"shimSenderGetStats",()=>O),e(E,"shimReceiverGetStats",()=>L),e(E,"shimRemoveStream",()=>A),e(E,"shimRTCDataChannel",()=>j),e(E,"shimAddTransceiver",()=>B),e(E,"shimGetParameters",()=>U),e(E,"shimCreateOffer",()=>F),e(E,"shimCreateAnswer",()=>N),e(E,"shimGetUserMedia",()=>x),e(E,"shimGetDisplayMedia",()=>D);var z={};function $(e){if("object"==typeof e&&e.RTCPeerConnection){if("getLocalStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._localStreams||(this._localStreams=[]),this._localStreams}),!("addStream"in e.RTCPeerConnection.prototype)){let t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addStream=function(e){this._localStreams||(this._localStreams=[]),this._localStreams.includes(e)||this._localStreams.push(e),e.getAudioTracks().forEach(n=>t.call(this,n,e)),e.getVideoTracks().forEach(n=>t.call(this,n,e))},e.RTCPeerConnection.prototype.addTrack=function(e,...n){return n&&n.forEach(e=>{this._localStreams?this._localStreams.includes(e)||this._localStreams.push(e):this._localStreams=[e]}),t.apply(this,arguments)}}"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){this._localStreams||(this._localStreams=[]);let t=this._localStreams.indexOf(e);if(-1===t)return;this._localStreams.splice(t,1);let n=e.getTracks();this.getSenders().forEach(e=>{n.includes(e.track)&&this.removeTrack(e)})})}}function V(e){if("object"==typeof e&&e.RTCPeerConnection&&("getRemoteStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getRemoteStreams=function(){return this._remoteStreams?this._remoteStreams:[]}),!("onaddstream"in e.RTCPeerConnection.prototype))){Object.defineProperty(e.RTCPeerConnection.prototype,"onaddstream",{get(){return this._onaddstream},set(e){this._onaddstream&&(this.removeEventListener("addstream",this._onaddstream),this.removeEventListener("track",this._onaddstreampoly)),this.addEventListener("addstream",this._onaddstream=e),this.addEventListener("track",this._onaddstreampoly=e=>{e.streams.forEach(e=>{if(this._remoteStreams||(this._remoteStreams=[]),this._remoteStreams.includes(e))return;this._remoteStreams.push(e);let t=new Event("addstream");t.stream=e,this.dispatchEvent(t)})})}});let t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){let e=this;return this._onaddstreampoly||this.addEventListener("track",this._onaddstreampoly=function(t){t.streams.forEach(t=>{if(e._remoteStreams||(e._remoteStreams=[]),e._remoteStreams.indexOf(t)>=0)return;e._remoteStreams.push(t);let n=new Event("addstream");n.stream=t,e.dispatchEvent(n)})}),t.apply(e,arguments)}}}function G(e){if("object"!=typeof e||!e.RTCPeerConnection)return;let t=e.RTCPeerConnection.prototype,n=t.createOffer,r=t.createAnswer,i=t.setLocalDescription,s=t.setRemoteDescription,o=t.addIceCandidate;t.createOffer=function(e,t){let r=arguments.length>=2?arguments[2]:arguments[0],i=n.apply(this,[r]);return t?(i.then(e,t),Promise.resolve()):i},t.createAnswer=function(e,t){let n=arguments.length>=2?arguments[2]:arguments[0],i=r.apply(this,[n]);return t?(i.then(e,t),Promise.resolve()):i};let a=function(e,t,n){let r=i.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r};t.setLocalDescription=a,t.setRemoteDescription=a=function(e,t,n){let r=s.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r},t.addIceCandidate=function(e,t,n){let r=o.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r}}function J(e){let t=e&&e.navigator;if(t.mediaDevices&&t.mediaDevices.getUserMedia){let e=t.mediaDevices,n=e.getUserMedia.bind(e);t.mediaDevices.getUserMedia=e=>n(W(e))}!t.getUserMedia&&t.mediaDevices&&t.mediaDevices.getUserMedia&&(t.getUserMedia=(function(e,n,r){t.mediaDevices.getUserMedia(e).then(n,r)}).bind(t))}function W(e){return e&&void 0!==e.video?Object.assign({},e,{video:function e(t){return _(t)?Object.keys(t).reduce(function(n,r){let i=_(t[r]),s=i?e(t[r]):t[r],o=i&&!Object.keys(s).length;return void 0===s||o?n:Object.assign(n,{[r]:s})},{}):t}(e.video)}):e}function Y(e){if(!e.RTCPeerConnection)return;let t=e.RTCPeerConnection;e.RTCPeerConnection=function(e,n){if(e&&e.iceServers){let t=[];for(let n=0;n<e.iceServers.length;n++){let r=e.iceServers[n];void 0===r.urls&&r.url?(m("RTCIceServer.url","RTCIceServer.urls"),(r=JSON.parse(JSON.stringify(r))).urls=r.url,delete r.url,t.push(r)):t.push(e.iceServers[n])}e.iceServers=t}return new t(e,n)},e.RTCPeerConnection.prototype=t.prototype,"generateCertificate"in t&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:()=>t.generateCertificate})}function H(e){"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get(){return{receiver:this.receiver}}})}function K(e){let t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(e){if(e){void 0!==e.offerToReceiveAudio&&(e.offerToReceiveAudio=!!e.offerToReceiveAudio);let t=this.getTransceivers().find(e=>"audio"===e.receiver.track.kind);!1===e.offerToReceiveAudio&&t?"sendrecv"===t.direction?t.setDirection?t.setDirection("sendonly"):t.direction="sendonly":"recvonly"===t.direction&&(t.setDirection?t.setDirection("inactive"):t.direction="inactive"):!0!==e.offerToReceiveAudio||t||this.addTransceiver("audio",{direction:"recvonly"}),void 0!==e.offerToReceiveVideo&&(e.offerToReceiveVideo=!!e.offerToReceiveVideo);let n=this.getTransceivers().find(e=>"video"===e.receiver.track.kind);!1===e.offerToReceiveVideo&&n?"sendrecv"===n.direction?n.setDirection?n.setDirection("sendonly"):n.direction="sendonly":"recvonly"===n.direction&&(n.setDirection?n.setDirection("inactive"):n.direction="inactive"):!0!==e.offerToReceiveVideo||n||this.addTransceiver("video",{direction:"recvonly"})}return t.apply(this,arguments)}}function X(e){"object"!=typeof e||e.AudioContext||(e.AudioContext=e.webkitAudioContext)}e(z,"shimLocalStreamsAPI",()=>$),e(z,"shimRemoteStreamsAPI",()=>V),e(z,"shimCallbacksAPI",()=>G),e(z,"shimGetUserMedia",()=>J),e(z,"shimConstraints",()=>W),e(z,"shimRTCIceServerUrls",()=>Y),e(z,"shimTrackEventTransceiver",()=>H),e(z,"shimCreateOfferLegacy",()=>K),e(z,"shimAudioContext",()=>X);var Q={};"use strict";e(Q,"shimRTCIceCandidate",()=>ee),e(Q,"shimRTCIceCandidateRelayProtocol",()=>et),e(Q,"shimMaxMessageSize",()=>en),e(Q,"shimSendThrowTypeError",()=>er),e(Q,"shimConnectionState",()=>ei),e(Q,"removeExtmapAllowMixed",()=>es),e(Q,"shimAddIceCandidateNullOrEmpty",()=>eo),e(Q,"shimParameterlessSetLocalDescription",()=>ea);var q={};"use strict";let Z={};function ee(e){if(!e.RTCIceCandidate||e.RTCIceCandidate&&"foundation"in e.RTCIceCandidate.prototype)return;let n=e.RTCIceCandidate;e.RTCIceCandidate=function(e){if("object"==typeof e&&e.candidate&&0===e.candidate.indexOf("a=")&&((e=JSON.parse(JSON.stringify(e))).candidate=e.candidate.substring(2)),e.candidate&&e.candidate.length){let r=new n(e),i=t(q).parseCandidate(e.candidate);for(let e in i)e in r||Object.defineProperty(r,e,{value:i[e]});return r.toJSON=function(){return{candidate:r.candidate,sdpMid:r.sdpMid,sdpMLineIndex:r.sdpMLineIndex,usernameFragment:r.usernameFragment}},r}return new n(e)},e.RTCIceCandidate.prototype=n.prototype,l(e,"icecandidate",t=>(t.candidate&&Object.defineProperty(t,"candidate",{value:new e.RTCIceCandidate(t.candidate),writable:"false"}),t))}function et(e){!e.RTCIceCandidate||e.RTCIceCandidate&&"relayProtocol"in e.RTCIceCandidate.prototype||l(e,"icecandidate",e=>{if(e.candidate){let n=t(q).parseCandidate(e.candidate.candidate);"relay"===n.type&&(e.candidate.relayProtocol=({0:"tls",1:"tcp",2:"udp"})[n.priority>>24])}return e})}function en(e,n){if(!e.RTCPeerConnection)return;"sctp"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"sctp",{get(){return void 0===this._sctp?null:this._sctp}});let r=function(e){if(!e||!e.sdp)return!1;let n=t(q).splitSections(e.sdp);return n.shift(),n.some(e=>{let n=t(q).parseMLine(e);return n&&"application"===n.kind&&-1!==n.protocol.indexOf("SCTP")})},i=function(e){let t=e.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);if(null===t||t.length<2)return -1;let n=parseInt(t[1],10);return n!=n?-1:n},s=function(e){let t=65536;return"firefox"===n.browser&&(t=n.version<57?-1===e?16384:0x7ffffff5:n.version<60?57===n.version?65535:65536:0x7ffffff5),t},o=function(e,r){let i=65536;"firefox"===n.browser&&57===n.version&&(i=65535);let s=t(q).matchPrefix(e.sdp,"a=max-message-size:");return s.length>0?i=parseInt(s[0].substring(19),10):"firefox"===n.browser&&-1!==r&&(i=0x7ffffff5),i},a=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){if(this._sctp=null,"chrome"===n.browser&&n.version>=76){let{sdpSemantics:e}=this.getConfiguration();"plan-b"===e&&Object.defineProperty(this,"sctp",{get(){return void 0===this._sctp?null:this._sctp},enumerable:!0,configurable:!0})}if(r(arguments[0])){let e,t=i(arguments[0]),n=s(t),r=o(arguments[0],t);e=0===n&&0===r?Number.POSITIVE_INFINITY:0===n||0===r?Math.max(n,r):Math.min(n,r);let a={};Object.defineProperty(a,"maxMessageSize",{get:()=>e}),this._sctp=a}return a.apply(this,arguments)}}function er(e){if(!(e.RTCPeerConnection&&"createDataChannel"in e.RTCPeerConnection.prototype))return;function t(e,t){let n=e.send;e.send=function(){let r=arguments[0],i=r.length||r.size||r.byteLength;if("open"===e.readyState&&t.sctp&&i>t.sctp.maxMessageSize)throw TypeError("Message too large (can send a maximum of "+t.sctp.maxMessageSize+" bytes)");return n.apply(e,arguments)}}let n=e.RTCPeerConnection.prototype.createDataChannel;e.RTCPeerConnection.prototype.createDataChannel=function(){let e=n.apply(this,arguments);return t(e,this),e},l(e,"datachannel",e=>(t(e.channel,e.target),e))}function ei(e){if(!e.RTCPeerConnection||"connectionState"in e.RTCPeerConnection.prototype)return;let t=e.RTCPeerConnection.prototype;Object.defineProperty(t,"connectionState",{get(){return({completed:"connected",checking:"connecting"})[this.iceConnectionState]||this.iceConnectionState},enumerable:!0,configurable:!0}),Object.defineProperty(t,"onconnectionstatechange",{get(){return this._onconnectionstatechange||null},set(e){this._onconnectionstatechange&&(this.removeEventListener("connectionstatechange",this._onconnectionstatechange),delete this._onconnectionstatechange),e&&this.addEventListener("connectionstatechange",this._onconnectionstatechange=e)},enumerable:!0,configurable:!0}),["setLocalDescription","setRemoteDescription"].forEach(e=>{let n=t[e];t[e]=function(){return this._connectionstatechangepoly||(this._connectionstatechangepoly=e=>{let t=e.target;if(t._lastConnectionState!==t.connectionState){t._lastConnectionState=t.connectionState;let n=new Event("connectionstatechange",e);t.dispatchEvent(n)}return e},this.addEventListener("iceconnectionstatechange",this._connectionstatechangepoly)),n.apply(this,arguments)}})}function es(e,t){if(!e.RTCPeerConnection||"chrome"===t.browser&&t.version>=71||"safari"===t.browser&&t.version>=605)return;let n=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(t){if(t&&t.sdp&&-1!==t.sdp.indexOf("\na=extmap-allow-mixed")){let n=t.sdp.split("\n").filter(e=>"a=extmap-allow-mixed"!==e.trim()).join("\n");e.RTCSessionDescription&&t instanceof e.RTCSessionDescription?arguments[0]=new e.RTCSessionDescription({type:t.type,sdp:n}):t.sdp=n}return n.apply(this,arguments)}}function eo(e,t){if(!(e.RTCPeerConnection&&e.RTCPeerConnection.prototype))return;let n=e.RTCPeerConnection.prototype.addIceCandidate;n&&0!==n.length&&(e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?("chrome"===t.browser&&t.version<78||"firefox"===t.browser&&t.version<68||"safari"===t.browser)&&arguments[0]&&""===arguments[0].candidate?Promise.resolve():n.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())})}function ea(e,t){if(!(e.RTCPeerConnection&&e.RTCPeerConnection.prototype))return;let n=e.RTCPeerConnection.prototype.setLocalDescription;n&&0!==n.length&&(e.RTCPeerConnection.prototype.setLocalDescription=function(){let e=arguments[0]||{};if("object"!=typeof e||e.type&&e.sdp)return n.apply(this,arguments);if(!(e={type:e.type,sdp:e.sdp}).type)switch(this.signalingState){case"stable":case"have-local-offer":case"have-remote-pranswer":e.type="offer";break;default:e.type="answer"}return e.sdp||"offer"!==e.type&&"answer"!==e.type?n.apply(this,[e]):("offer"===e.type?this.createOffer:this.createAnswer).apply(this).then(e=>n.apply(this,[e]))})}"use strict";Z.generateIdentifier=function(){return Math.random().toString(36).substring(2,12)},Z.localCName=Z.generateIdentifier(),Z.splitLines=function(e){return e.trim().split("\n").map(e=>e.trim())},Z.splitSections=function(e){return e.split("\nm=").map((e,t)=>(t>0?"m="+e:e).trim()+"\r\n")},Z.getDescription=function(e){let t=Z.splitSections(e);return t&&t[0]},Z.getMediaSections=function(e){let t=Z.splitSections(e);return t.shift(),t},Z.matchPrefix=function(e,t){return Z.splitLines(e).filter(e=>0===e.indexOf(t))},Z.parseCandidate=function(e){let t,n={foundation:(t=0===e.indexOf("a=candidate:")?e.substring(12).split(" "):e.substring(10).split(" "))[0],component:{1:"rtp",2:"rtcp"}[t[1]]||t[1],protocol:t[2].toLowerCase(),priority:parseInt(t[3],10),ip:t[4],address:t[4],port:parseInt(t[5],10),type:t[7]};for(let e=8;e<t.length;e+=2)switch(t[e]){case"raddr":n.relatedAddress=t[e+1];break;case"rport":n.relatedPort=parseInt(t[e+1],10);break;case"tcptype":n.tcpType=t[e+1];break;case"ufrag":n.ufrag=t[e+1],n.usernameFragment=t[e+1];break;default:void 0===n[t[e]]&&(n[t[e]]=t[e+1])}return n},Z.writeCandidate=function(e){let t=[];t.push(e.foundation);let n=e.component;"rtp"===n?t.push(1):"rtcp"===n?t.push(2):t.push(n),t.push(e.protocol.toUpperCase()),t.push(e.priority),t.push(e.address||e.ip),t.push(e.port);let r=e.type;return t.push("typ"),t.push(r),"host"!==r&&e.relatedAddress&&e.relatedPort&&(t.push("raddr"),t.push(e.relatedAddress),t.push("rport"),t.push(e.relatedPort)),e.tcpType&&"tcp"===e.protocol.toLowerCase()&&(t.push("tcptype"),t.push(e.tcpType)),(e.usernameFragment||e.ufrag)&&(t.push("ufrag"),t.push(e.usernameFragment||e.ufrag)),"candidate:"+t.join(" ")},Z.parseIceOptions=function(e){return e.substring(14).split(" ")},Z.parseRtpMap=function(e){let t=e.substring(9).split(" "),n={payloadType:parseInt(t.shift(),10)};return n.name=(t=t[0].split("/"))[0],n.clockRate=parseInt(t[1],10),n.channels=3===t.length?parseInt(t[2],10):1,n.numChannels=n.channels,n},Z.writeRtpMap=function(e){let t=e.payloadType;void 0!==e.preferredPayloadType&&(t=e.preferredPayloadType);let n=e.channels||e.numChannels||1;return"a=rtpmap:"+t+" "+e.name+"/"+e.clockRate+(1!==n?"/"+n:"")+"\r\n"},Z.parseExtmap=function(e){let t=e.substring(9).split(" ");return{id:parseInt(t[0],10),direction:t[0].indexOf("/")>0?t[0].split("/")[1]:"sendrecv",uri:t[1],attributes:t.slice(2).join(" ")}},Z.writeExtmap=function(e){return"a=extmap:"+(e.id||e.preferredId)+(e.direction&&"sendrecv"!==e.direction?"/"+e.direction:"")+" "+e.uri+(e.attributes?" "+e.attributes:"")+"\r\n"},Z.parseFmtp=function(e){let t,n={},r=e.substring(e.indexOf(" ")+1).split(";");for(let e=0;e<r.length;e++)n[(t=r[e].trim().split("="))[0].trim()]=t[1];return n},Z.writeFmtp=function(e){let t="",n=e.payloadType;if(void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.parameters&&Object.keys(e.parameters).length){let r=[];Object.keys(e.parameters).forEach(t=>{void 0!==e.parameters[t]?r.push(t+"="+e.parameters[t]):r.push(t)}),t+="a=fmtp:"+n+" "+r.join(";")+"\r\n"}return t},Z.parseRtcpFb=function(e){let t=e.substring(e.indexOf(" ")+1).split(" ");return{type:t.shift(),parameter:t.join(" ")}},Z.writeRtcpFb=function(e){let t="",n=e.payloadType;return void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.rtcpFeedback&&e.rtcpFeedback.length&&e.rtcpFeedback.forEach(e=>{t+="a=rtcp-fb:"+n+" "+e.type+(e.parameter&&e.parameter.length?" "+e.parameter:"")+"\r\n"}),t},Z.parseSsrcMedia=function(e){let t=e.indexOf(" "),n={ssrc:parseInt(e.substring(7,t),10)},r=e.indexOf(":",t);return r>-1?(n.attribute=e.substring(t+1,r),n.value=e.substring(r+1)):n.attribute=e.substring(t+1),n},Z.parseSsrcGroup=function(e){let t=e.substring(13).split(" ");return{semantics:t.shift(),ssrcs:t.map(e=>parseInt(e,10))}},Z.getMid=function(e){let t=Z.matchPrefix(e,"a=mid:")[0];if(t)return t.substring(6)},Z.parseFingerprint=function(e){let t=e.substring(14).split(" ");return{algorithm:t[0].toLowerCase(),value:t[1].toUpperCase()}},Z.getDtlsParameters=function(e,t){return{role:"auto",fingerprints:Z.matchPrefix(e+t,"a=fingerprint:").map(Z.parseFingerprint)}},Z.writeDtlsParameters=function(e,t){let n="a=setup:"+t+"\r\n";return e.fingerprints.forEach(e=>{n+="a=fingerprint:"+e.algorithm+" "+e.value+"\r\n"}),n},Z.parseCryptoLine=function(e){let t=e.substring(9).split(" ");return{tag:parseInt(t[0],10),cryptoSuite:t[1],keyParams:t[2],sessionParams:t.slice(3)}},Z.writeCryptoLine=function(e){return"a=crypto:"+e.tag+" "+e.cryptoSuite+" "+("object"==typeof e.keyParams?Z.writeCryptoKeyParams(e.keyParams):e.keyParams)+(e.sessionParams?" "+e.sessionParams.join(" "):"")+"\r\n"},Z.parseCryptoKeyParams=function(e){if(0!==e.indexOf("inline:"))return null;let t=e.substring(7).split("|");return{keyMethod:"inline",keySalt:t[0],lifeTime:t[1],mkiValue:t[2]?t[2].split(":")[0]:void 0,mkiLength:t[2]?t[2].split(":")[1]:void 0}},Z.writeCryptoKeyParams=function(e){return e.keyMethod+":"+e.keySalt+(e.lifeTime?"|"+e.lifeTime:"")+(e.mkiValue&&e.mkiLength?"|"+e.mkiValue+":"+e.mkiLength:"")},Z.getCryptoParameters=function(e,t){return Z.matchPrefix(e+t,"a=crypto:").map(Z.parseCryptoLine)},Z.getIceParameters=function(e,t){let n=Z.matchPrefix(e+t,"a=ice-ufrag:")[0],r=Z.matchPrefix(e+t,"a=ice-pwd:")[0];return n&&r?{usernameFragment:n.substring(12),password:r.substring(10)}:null},Z.writeIceParameters=function(e){let t="a=ice-ufrag:"+e.usernameFragment+"\r\na=ice-pwd:"+e.password+"\r\n";return e.iceLite&&(t+="a=ice-lite\r\n"),t},Z.parseRtpParameters=function(e){let t={codecs:[],headerExtensions:[],fecMechanisms:[],rtcp:[]},n=Z.splitLines(e)[0].split(" ");t.profile=n[2];for(let r=3;r<n.length;r++){let i=n[r],s=Z.matchPrefix(e,"a=rtpmap:"+i+" ")[0];if(s){let n=Z.parseRtpMap(s),r=Z.matchPrefix(e,"a=fmtp:"+i+" ");switch(n.parameters=r.length?Z.parseFmtp(r[0]):{},n.rtcpFeedback=Z.matchPrefix(e,"a=rtcp-fb:"+i+" ").map(Z.parseRtcpFb),t.codecs.push(n),n.name.toUpperCase()){case"RED":case"ULPFEC":t.fecMechanisms.push(n.name.toUpperCase())}}}Z.matchPrefix(e,"a=extmap:").forEach(e=>{t.headerExtensions.push(Z.parseExtmap(e))});let r=Z.matchPrefix(e,"a=rtcp-fb:* ").map(Z.parseRtcpFb);return t.codecs.forEach(e=>{r.forEach(t=>{e.rtcpFeedback.find(e=>e.type===t.type&&e.parameter===t.parameter)||e.rtcpFeedback.push(t)})}),t},Z.writeRtpDescription=function(e,t){let n="";n+="m="+e+" ",n+=t.codecs.length>0?"9":"0",n+=" "+(t.profile||"UDP/TLS/RTP/SAVPF")+" ",n+=t.codecs.map(e=>void 0!==e.preferredPayloadType?e.preferredPayloadType:e.payloadType).join(" ")+"\r\n",n+="c=IN IP4 0.0.0.0\r\n",n+="a=rtcp:9 IN IP4 0.0.0.0\r\n",t.codecs.forEach(e=>{n+=Z.writeRtpMap(e),n+=Z.writeFmtp(e),n+=Z.writeRtcpFb(e)});let r=0;return t.codecs.forEach(e=>{e.maxptime>r&&(r=e.maxptime)}),r>0&&(n+="a=maxptime:"+r+"\r\n"),t.headerExtensions&&t.headerExtensions.forEach(e=>{n+=Z.writeExtmap(e)}),n},Z.parseRtpEncodingParameters=function(e){let t,n=[],r=Z.parseRtpParameters(e),i=-1!==r.fecMechanisms.indexOf("RED"),s=-1!==r.fecMechanisms.indexOf("ULPFEC"),o=Z.matchPrefix(e,"a=ssrc:").map(e=>Z.parseSsrcMedia(e)).filter(e=>"cname"===e.attribute),a=o.length>0&&o[0].ssrc,c=Z.matchPrefix(e,"a=ssrc-group:FID").map(e=>e.substring(17).split(" ").map(e=>parseInt(e,10)));c.length>0&&c[0].length>1&&c[0][0]===a&&(t=c[0][1]),r.codecs.forEach(e=>{if("RTX"===e.name.toUpperCase()&&e.parameters.apt){let r={ssrc:a,codecPayloadType:parseInt(e.parameters.apt,10)};a&&t&&(r.rtx={ssrc:t}),n.push(r),i&&((r=JSON.parse(JSON.stringify(r))).fec={ssrc:a,mechanism:s?"red+ulpfec":"red"},n.push(r))}}),0===n.length&&a&&n.push({ssrc:a});let p=Z.matchPrefix(e,"b=");return p.length&&(p=0===p[0].indexOf("b=TIAS:")?parseInt(p[0].substring(7),10):0===p[0].indexOf("b=AS:")?950*parseInt(p[0].substring(5),10)-16e3:void 0,n.forEach(e=>{e.maxBitrate=p})),n},Z.parseRtcpParameters=function(e){let t={},n=Z.matchPrefix(e,"a=ssrc:").map(e=>Z.parseSsrcMedia(e)).filter(e=>"cname"===e.attribute)[0];n&&(t.cname=n.value,t.ssrc=n.ssrc);let r=Z.matchPrefix(e,"a=rtcp-rsize");return t.reducedSize=r.length>0,t.compound=0===r.length,t.mux=Z.matchPrefix(e,"a=rtcp-mux").length>0,t},Z.writeRtcpParameters=function(e){let t="";return e.reducedSize&&(t+="a=rtcp-rsize\r\n"),e.mux&&(t+="a=rtcp-mux\r\n"),void 0!==e.ssrc&&e.cname&&(t+="a=ssrc:"+e.ssrc+" cname:"+e.cname+"\r\n"),t},Z.parseMsid=function(e){let t,n=Z.matchPrefix(e,"a=msid:");if(1===n.length)return{stream:(t=n[0].substring(7).split(" "))[0],track:t[1]};let r=Z.matchPrefix(e,"a=ssrc:").map(e=>Z.parseSsrcMedia(e)).filter(e=>"msid"===e.attribute);if(r.length>0)return{stream:(t=r[0].value.split(" "))[0],track:t[1]}},Z.parseSctpDescription=function(e){let t,n=Z.parseMLine(e),r=Z.matchPrefix(e,"a=max-message-size:");r.length>0&&(t=parseInt(r[0].substring(19),10)),isNaN(t)&&(t=65536);let i=Z.matchPrefix(e,"a=sctp-port:");if(i.length>0)return{port:parseInt(i[0].substring(12),10),protocol:n.fmt,maxMessageSize:t};let s=Z.matchPrefix(e,"a=sctpmap:");if(s.length>0){let e=s[0].substring(10).split(" ");return{port:parseInt(e[0],10),protocol:e[1],maxMessageSize:t}}},Z.writeSctpDescription=function(e,t){let n=[];return n="DTLS/SCTP"!==e.protocol?["m="+e.kind+" 9 "+e.protocol+" "+t.protocol+"\r\n","c=IN IP4 0.0.0.0\r\n","a=sctp-port:"+t.port+"\r\n"]:["m="+e.kind+" 9 "+e.protocol+" "+t.port+"\r\n","c=IN IP4 0.0.0.0\r\n","a=sctpmap:"+t.port+" "+t.protocol+" 65535\r\n"],void 0!==t.maxMessageSize&&n.push("a=max-message-size:"+t.maxMessageSize+"\r\n"),n.join("")},Z.generateSessionId=function(){return Math.random().toString().substr(2,22)},Z.writeSessionBoilerplate=function(e,t,n){return"v=0\r\no="+(n||"thisisadapterortc")+" "+(e||Z.generateSessionId())+" "+(void 0!==t?t:2)+" IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n"},Z.getDirection=function(e,t){let n=Z.splitLines(e);for(let e=0;e<n.length;e++)switch(n[e]){case"a=sendrecv":case"a=sendonly":case"a=recvonly":case"a=inactive":return n[e].substring(2)}return t?Z.getDirection(t):"sendrecv"},Z.getKind=function(e){return Z.splitLines(e)[0].split(" ")[0].substring(2)},Z.isRejected=function(e){return"0"===e.split(" ",2)[1]},Z.parseMLine=function(e){let t=Z.splitLines(e)[0].substring(2).split(" ");return{kind:t[0],port:parseInt(t[1],10),protocol:t[2],fmt:t.slice(3).join(" ")}},Z.parseOLine=function(e){let t=Z.matchPrefix(e,"o=")[0].substring(2).split(" ");return{username:t[0],sessionId:t[1],sessionVersion:parseInt(t[2],10),netType:t[3],addressType:t[4],address:t[5]}},Z.isValidSDP=function(e){if("string"!=typeof e||0===e.length)return!1;let t=Z.splitLines(e);for(let e=0;e<t.length;e++)if(t[e].length<2||"="!==t[e].charAt(1))return!1;return!0},q=Z;let ec=function({window:e}={},t={shimChrome:!0,shimFirefox:!0,shimSafari:!0}){let n=function(e){let t={browser:null,version:null};if(void 0===e||!e.navigator||!e.navigator.userAgent)return t.browser="Not a browser.",t;let{navigator:n}=e;if(n.userAgentData&&n.userAgentData.brands){let e=n.userAgentData.brands.find(e=>"Chromium"===e.brand);if(e)return{browser:"chrome",version:parseInt(e.version,10)}}return n.mozGetUserMedia?(t.browser="firefox",t.version=d(n.userAgent,/Firefox\/(\d+)\./,1)):n.webkitGetUserMedia||!1===e.isSecureContext&&e.webkitRTCPeerConnection?(t.browser="chrome",t.version=d(n.userAgent,/Chrom(e|ium)\/(\d+)\./,2)):e.RTCPeerConnection&&n.userAgent.match(/AppleWebKit\/(\d+)\./)?(t.browser="safari",t.version=d(n.userAgent,/AppleWebKit\/(\d+)\./,1),t.supportsUnifiedPlan=e.RTCRtpTransceiver&&"currentDirection"in e.RTCRtpTransceiver.prototype):t.browser="Not a supported browser.",t}(e),r={browserDetails:n,commonShim:Q,extractVersion:d,disableLog:h,disableWarnings:u,sdp:q};switch(n.browser){case"chrome":if(!y||!y.shimPeerConnection||!t.shimChrome){f("Chrome shim is not included in this adapter release.");break}if(null===n.version){f("Chrome shim can not determine version, not shimming.");break}f("adapter.js shimming chrome."),r.browserShim=y,eo(e,n),ea(e,n),y.shimGetUserMedia(e,n),y.shimMediaStream(e,n),y.shimPeerConnection(e,n),y.shimOnTrack(e,n),y.shimAddTrackRemoveTrack(e,n),y.shimGetSendersWithDtmf(e,n),y.shimSenderReceiverGetStats(e,n),y.fixNegotiationNeeded(e,n),ee(e,n),et(e,n),ei(e,n),en(e,n),er(e,n),es(e,n);break;case"firefox":if(!E||!E.shimPeerConnection||!t.shimFirefox){f("Firefox shim is not included in this adapter release.");break}f("adapter.js shimming firefox."),r.browserShim=E,eo(e,n),ea(e,n),E.shimGetUserMedia(e,n),E.shimPeerConnection(e,n),E.shimOnTrack(e,n),E.shimRemoveStream(e,n),E.shimSenderGetStats(e,n),E.shimReceiverGetStats(e,n),E.shimRTCDataChannel(e,n),E.shimAddTransceiver(e,n),E.shimGetParameters(e,n),E.shimCreateOffer(e,n),E.shimCreateAnswer(e,n),ee(e,n),ei(e,n),en(e,n),er(e,n);break;case"safari":if(!z||!t.shimSafari){f("Safari shim is not included in this adapter release.");break}f("adapter.js shimming safari."),r.browserShim=z,eo(e,n),ea(e,n),z.shimRTCIceServerUrls(e,n),z.shimCreateOfferLegacy(e,n),z.shimCallbacksAPI(e,n),z.shimLocalStreamsAPI(e,n),z.shimRemoteStreamsAPI(e,n),z.shimTrackEventTransceiver(e,n),z.shimGetUserMedia(e,n),z.shimAudioContext(e,n),ee(e,n),et(e,n),en(e,n),er(e,n),es(e,n);break;default:f("Unsupported browser!")}return r}({window:"undefined"==typeof window?void 0:window}),ep=ec.default||ec,ed=new class{isWebRTCSupported(){return"undefined"!=typeof RTCPeerConnection}isBrowserSupported(){let e=this.getBrowser(),t=this.getVersion();return!!this.supportedBrowsers.includes(e)&&("chrome"===e?t>=this.minChromeVersion:"firefox"===e?t>=this.minFirefoxVersion:"safari"===e&&!this.isIOS&&t>=this.minSafariVersion)}getBrowser(){return ep.browserDetails.browser}getVersion(){return ep.browserDetails.version||0}isUnifiedPlanSupported(){let e,t=this.getBrowser(),n=ep.browserDetails.version||0;if("chrome"===t&&n<this.minChromeVersion)return!1;if("firefox"===t&&n>=this.minFirefoxVersion)return!0;if(!window.RTCRtpTransceiver||!("currentDirection"in RTCRtpTransceiver.prototype))return!1;let r=!1;try{(e=new RTCPeerConnection).addTransceiver("audio"),r=!0}catch(e){}finally{e&&e.close()}return r}toString(){return`Supports:
+    browser:${this.getBrowser()}
+    version:${this.getVersion()}
+    isIOS:${this.isIOS}
+    isWebRTCSupported:${this.isWebRTCSupported()}
+    isBrowserSupported:${this.isBrowserSupported()}
+    isUnifiedPlanSupported:${this.isUnifiedPlanSupported()}`}constructor(){this.isIOS="undefined"!=typeof navigator&&["iPad","iPhone","iPod"].includes(navigator.platform),this.supportedBrowsers=["firefox","chrome","safari"],this.minFirefoxVersion=59,this.minChromeVersion=72,this.minSafariVersion=605}},el=e=>!e||/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/.test(e),eh=()=>Math.random().toString(36).slice(2),eu={iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:["turn:eu-0.turn.peerjs.com:3478","turn:us-0.turn.peerjs.com:3478"],username:"peerjs",credential:"peerjsp"}],sdpSemantics:"unified-plan"},ef=new class extends n{noop(){}blobToArrayBuffer(e,t){let n=new FileReader;return n.onload=function(e){e.target&&t(e.target.result)},n.readAsArrayBuffer(e),n}binaryStringToArrayBuffer(e){let t=new Uint8Array(e.length);for(let n=0;n<e.length;n++)t[n]=255&e.charCodeAt(n);return t.buffer}isSecure(){return"https:"===location.protocol}constructor(...e){super(...e),this.CLOUD_HOST="0.peerjs.com",this.CLOUD_PORT=443,this.chunkedBrowsers={Chrome:1,chrome:1},this.defaultConfig=eu,this.browser=ed.getBrowser(),this.browserVersion=ed.getVersion(),this.pack=s,this.unpack=i,this.supports=function(){let e,t={browser:ed.isBrowserSupported(),webRTC:ed.isWebRTCSupported(),audioVideo:!1,data:!1,binaryBlob:!1,reliable:!1};if(!t.webRTC)return t;try{let n;e=new RTCPeerConnection(eu),t.audioVideo=!0;try{n=e.createDataChannel("_PEERJSTEST",{ordered:!0}),t.data=!0,t.reliable=!!n.ordered;try{n.binaryType="blob",t.binaryBlob=!ed.isIOS}catch(e){}}catch(e){}finally{n&&n.close()}}catch(e){}finally{e&&e.close()}return t}(),this.validateId=el,this.randomToken=eh}};"use strict";var em=new class{get logLevel(){return this._logLevel}set logLevel(e){this._logLevel=e}log(...e){this._logLevel>=3&&this._print(3,...e)}warn(...e){this._logLevel>=2&&this._print(2,...e)}error(...e){this._logLevel>=1&&this._print(1,...e)}setLogFunction(e){this._print=e}_print(e,...t){let n=["PeerJS: ",...t];for(let e in n)n[e]instanceof Error&&(n[e]="("+n[e].name+") "+n[e].message);e>=3?console.log(...n):e>=2?console.warn("WARNING",...n):e>=1&&console.error("ERROR",...n)}constructor(){this._logLevel=0}},e_={},eg=Object.prototype.hasOwnProperty,ey="~";function eC(){}function ev(e,t,n){this.fn=e,this.context=t,this.once=n||!1}function eb(e,t,n,r,i){if("function"!=typeof n)throw TypeError("The listener must be a function");var s=new ev(n,r||e,i),o=ey?ey+t:t;return e._events[o]?e._events[o].fn?e._events[o]=[e._events[o],s]:e._events[o].push(s):(e._events[o]=s,e._eventsCount++),e}function eT(e,t){0==--e._eventsCount?e._events=new eC:delete e._events[t]}function eS(){this._events=new eC,this._eventsCount=0}Object.create&&(eC.prototype=Object.create(null),new eC().__proto__||(ey=!1)),eS.prototype.eventNames=function(){var e,t,n=[];if(0===this._eventsCount)return n;for(t in e=this._events)eg.call(e,t)&&n.push(ey?t.slice(1):t);return Object.getOwnPropertySymbols?n.concat(Object.getOwnPropertySymbols(e)):n},eS.prototype.listeners=function(e){var t=ey?ey+e:e,n=this._events[t];if(!n)return[];if(n.fn)return[n.fn];for(var r=0,i=n.length,s=Array(i);r<i;r++)s[r]=n[r].fn;return s},eS.prototype.listenerCount=function(e){var t=ey?ey+e:e,n=this._events[t];return n?n.fn?1:n.length:0},eS.prototype.emit=function(e,t,n,r,i,s){var o=ey?ey+e:e;if(!this._events[o])return!1;var a,c,p=this._events[o],d=arguments.length;if(p.fn){switch(p.once&&this.removeListener(e,p.fn,void 0,!0),d){case 1:return p.fn.call(p.context),!0;case 2:return p.fn.call(p.context,t),!0;case 3:return p.fn.call(p.context,t,n),!0;case 4:return p.fn.call(p.context,t,n,r),!0;case 5:return p.fn.call(p.context,t,n,r,i),!0;case 6:return p.fn.call(p.context,t,n,r,i,s),!0}for(c=1,a=Array(d-1);c<d;c++)a[c-1]=arguments[c];p.fn.apply(p.context,a)}else{var l,h=p.length;for(c=0;c<h;c++)switch(p[c].once&&this.removeListener(e,p[c].fn,void 0,!0),d){case 1:p[c].fn.call(p[c].context);break;case 2:p[c].fn.call(p[c].context,t);break;case 3:p[c].fn.call(p[c].context,t,n);break;case 4:p[c].fn.call(p[c].context,t,n,r);break;default:if(!a)for(l=1,a=Array(d-1);l<d;l++)a[l-1]=arguments[l];p[c].fn.apply(p[c].context,a)}}return!0},eS.prototype.on=function(e,t,n){return eb(this,e,t,n,!1)},eS.prototype.once=function(e,t,n){return eb(this,e,t,n,!0)},eS.prototype.removeListener=function(e,t,n,r){var i=ey?ey+e:e;if(!this._events[i])return this;if(!t)return eT(this,i),this;var s=this._events[i];if(s.fn)s.fn!==t||r&&!s.once||n&&s.context!==n||eT(this,i);else{for(var o=0,a=[],c=s.length;o<c;o++)(s[o].fn!==t||r&&!s[o].once||n&&s[o].context!==n)&&a.push(s[o]);a.length?this._events[i]=1===a.length?a[0]:a:eT(this,i)}return this},eS.prototype.removeAllListeners=function(e){var t;return e?(t=ey?ey+e:e,this._events[t]&&eT(this,t)):(this._events=new eC,this._eventsCount=0),this},eS.prototype.off=eS.prototype.removeListener,eS.prototype.addListener=eS.prototype.on,eS.prefixed=ey,eS.EventEmitter=eS,e_=eS;var ek=function(e){return e.Data="data",e.Media="media",e}({}),eR=function(e){return e.BrowserIncompatible="browser-incompatible",e.Disconnected="disconnected",e.InvalidID="invalid-id",e.InvalidKey="invalid-key",e.Network="network",e.PeerUnavailable="peer-unavailable",e.SslUnavailable="ssl-unavailable",e.ServerError="server-error",e.SocketError="socket-error",e.SocketClosed="socket-closed",e.UnavailableID="unavailable-id",e.WebRTC="webrtc",e}({}),eP=function(e){return e.NegotiationFailed="negotiation-failed",e.ConnectionClosed="connection-closed",e}({}),ew=function(e){return e.NotOpenYet="not-open-yet",e.MessageToBig="message-too-big",e}({}),eE=function(e){return e.Binary="binary",e.BinaryUTF8="binary-utf8",e.JSON="json",e.None="raw",e}({}),ex=function(e){return e.Message="message",e.Disconnected="disconnected",e.Error="error",e.Close="close",e}({}),eD=function(e){return e.Heartbeat="HEARTBEAT",e.Candidate="CANDIDATE",e.Offer="OFFER",e.Answer="ANSWER",e.Open="OPEN",e.Error="ERROR",e.IdTaken="ID-TAKEN",e.InvalidKey="INVALID-KEY",e.Leave="LEAVE",e.Expire="EXPIRE",e}({});let eI="1.5.5";class eM extends e_.EventEmitter{start(e,t){this._id=e;let n=`${this._baseUrl}&id=${e}&token=${t}`;!this._socket&&this._disconnected&&(this._socket=new WebSocket(n+"&version="+eI),this._disconnected=!1,this._socket.onmessage=e=>{let t;try{t=JSON.parse(e.data),em.log("Server message received:",t)}catch(t){em.log("Invalid server message",e.data);return}this.emit(ex.Message,t)},this._socket.onclose=e=>{this._disconnected||(em.log("Socket closed.",e),this._cleanup(),this._disconnected=!0,this.emit(ex.Disconnected))},this._socket.onopen=()=>{this._disconnected||(this._sendQueuedMessages(),em.log("Socket open"),this._scheduleHeartbeat())})}_scheduleHeartbeat(){this._wsPingTimer=setTimeout(()=>{this._sendHeartbeat()},this.pingInterval)}_sendHeartbeat(){if(!this._wsOpen())return void em.log("Cannot send heartbeat, because socket closed");let e=JSON.stringify({type:eD.Heartbeat});this._socket.send(e),this._scheduleHeartbeat()}_wsOpen(){return!!this._socket&&1===this._socket.readyState}_sendQueuedMessages(){let e=[...this._messagesQueue];for(let t of(this._messagesQueue=[],e))this.send(t)}send(e){if(this._disconnected)return;if(!this._id)return void this._messagesQueue.push(e);if(!e.type)return void this.emit(ex.Error,"Invalid message");if(!this._wsOpen())return;let t=JSON.stringify(e);this._socket.send(t)}close(){this._disconnected||(this._cleanup(),this._disconnected=!0)}_cleanup(){this._socket&&(this._socket.onopen=this._socket.onmessage=this._socket.onclose=null,this._socket.close(),this._socket=void 0),clearTimeout(this._wsPingTimer)}constructor(e,t,n,r,i,s=5e3){super(),this.pingInterval=s,this._disconnected=!0,this._messagesQueue=[],this._baseUrl=(e?"wss://":"ws://")+t+":"+n+r+"peerjs?key="+i}}class eO{startConnection(e){let t=this._startPeerConnection();if(this.connection.peerConnection=t,this.connection.type===ek.Media&&e._stream&&this._addTracksToConnection(e._stream,t),e.originator){let n=this.connection,r={ordered:!!e.reliable},i=t.createDataChannel(n.label,r);n._initializeDataChannel(i),this._makeOffer()}else this.handleSDP("OFFER",e.sdp)}_startPeerConnection(){em.log("Creating RTCPeerConnection.");let e=new RTCPeerConnection(this.connection.provider.options.config);return this._setupListeners(e),e}_setupListeners(e){let t=this.connection.peer,n=this.connection.connectionId,r=this.connection.type,i=this.connection.provider;em.log("Listening for ICE candidates."),e.onicecandidate=e=>{e.candidate&&e.candidate.candidate&&(em.log(`Received ICE candidates for ${t}:`,e.candidate),i.socket.send({type:eD.Candidate,payload:{candidate:e.candidate,type:r,connectionId:n},dst:t}))},e.oniceconnectionstatechange=()=>{switch(e.iceConnectionState){case"failed":em.log("iceConnectionState is failed, closing connections to "+t),this.connection.emitError(eP.NegotiationFailed,"Negotiation of connection to "+t+" failed."),this.connection.close();break;case"closed":em.log("iceConnectionState is closed, closing connections to "+t),this.connection.emitError(eP.ConnectionClosed,"Connection to "+t+" closed."),this.connection.close();break;case"disconnected":em.log("iceConnectionState changed to disconnected on the connection with "+t);break;case"completed":e.onicecandidate=()=>{}}this.connection.emit("iceStateChanged",e.iceConnectionState)},em.log("Listening for data channel"),e.ondatachannel=e=>{em.log("Received data channel");let r=e.channel;i.getConnection(t,n)._initializeDataChannel(r)},em.log("Listening for remote stream"),e.ontrack=e=>{em.log("Received remote stream");let r=e.streams[0],s=i.getConnection(t,n);s.type===ek.Media&&this._addStreamToMediaConnection(r,s)}}cleanup(){em.log("Cleaning up PeerConnection to "+this.connection.peer);let e=this.connection.peerConnection;if(!e)return;this.connection.peerConnection=null,e.onicecandidate=e.oniceconnectionstatechange=e.ondatachannel=e.ontrack=()=>{};let t="closed"!==e.signalingState,n=!1,r=this.connection.dataChannel;r&&(n=!!r.readyState&&"closed"!==r.readyState),(t||n)&&e.close()}async _makeOffer(){let e=this.connection.peerConnection,t=this.connection.provider;try{let n=await e.createOffer(this.connection.options.constraints);em.log("Created offer."),this.connection.options.sdpTransform&&"function"==typeof this.connection.options.sdpTransform&&(n.sdp=this.connection.options.sdpTransform(n.sdp)||n.sdp);try{await e.setLocalDescription(n),em.log("Set localDescription:",n,`for:${this.connection.peer}`);let r={sdp:n,type:this.connection.type,connectionId:this.connection.connectionId,metadata:this.connection.metadata};if(this.connection.type===ek.Data){let e=this.connection;r={...r,label:e.label,reliable:e.reliable,serialization:e.serialization}}t.socket.send({type:eD.Offer,payload:r,dst:this.connection.peer})}catch(e){"OperationError: Failed to set local offer sdp: Called in wrong state: kHaveRemoteOffer"!=e&&(t.emitError(eR.WebRTC,e),em.log("Failed to setLocalDescription, ",e))}}catch(e){t.emitError(eR.WebRTC,e),em.log("Failed to createOffer, ",e)}}async _makeAnswer(){let e=this.connection.peerConnection,t=this.connection.provider;try{let n=await e.createAnswer();em.log("Created answer."),this.connection.options.sdpTransform&&"function"==typeof this.connection.options.sdpTransform&&(n.sdp=this.connection.options.sdpTransform(n.sdp)||n.sdp);try{await e.setLocalDescription(n),em.log("Set localDescription:",n,`for:${this.connection.peer}`),t.socket.send({type:eD.Answer,payload:{sdp:n,type:this.connection.type,connectionId:this.connection.connectionId},dst:this.connection.peer})}catch(e){t.emitError(eR.WebRTC,e),em.log("Failed to setLocalDescription, ",e)}}catch(e){t.emitError(eR.WebRTC,e),em.log("Failed to create answer, ",e)}}async handleSDP(e,t){t=new RTCSessionDescription(t);let n=this.connection.peerConnection,r=this.connection.provider;em.log("Setting remote description",t);try{await n.setRemoteDescription(t),em.log(`Set remoteDescription:${e} for:${this.connection.peer}`),"OFFER"===e&&await this._makeAnswer()}catch(e){r.emitError(eR.WebRTC,e),em.log("Failed to setRemoteDescription, ",e)}}async handleCandidate(e){em.log("handleCandidate:",e);try{await this.connection.peerConnection.addIceCandidate(e),em.log(`Added ICE candidate for:${this.connection.peer}`)}catch(e){this.connection.provider.emitError(eR.WebRTC,e),em.log("Failed to handleCandidate, ",e)}}_addTracksToConnection(e,t){if(em.log(`add tracks from stream ${e.id} to peer connection`),!t.addTrack)return em.error("Your browser does't support RTCPeerConnection#addTrack. Ignored.");e.getTracks().forEach(n=>{t.addTrack(n,e)})}_addStreamToMediaConnection(e,t){em.log(`add stream ${e.id} to media connection ${t.connectionId}`),t.addStream(e)}constructor(e){this.connection=e}}class eL extends e_.EventEmitter{emitError(e,t){em.error("Error:",t),this.emit("error",new eA(`${e}`,t))}}class eA extends Error{constructor(e,t){"string"==typeof t?super(t):(super(),Object.assign(this,t)),this.type=e}}class ej extends eL{get open(){return this._open}constructor(e,t,n){super(),this.peer=e,this.provider=t,this.options=n,this._open=!1,this.metadata=n.metadata}}class eB extends ej{get type(){return ek.Media}get localStream(){return this._localStream}get remoteStream(){return this._remoteStream}_initializeDataChannel(e){this.dataChannel=e,this.dataChannel.onopen=()=>{em.log(`DC#${this.connectionId} dc connection success`),this.emit("willCloseOnRemote")},this.dataChannel.onclose=()=>{em.log(`DC#${this.connectionId} dc closed for:`,this.peer),this.close()}}addStream(e){em.log("Receiving stream",e),this._remoteStream=e,super.emit("stream",e)}handleMessage(e){let t=e.type,n=e.payload;switch(e.type){case eD.Answer:this._negotiator.handleSDP(t,n.sdp),this._open=!0;break;case eD.Candidate:this._negotiator.handleCandidate(n.candidate);break;default:em.warn(`Unrecognized message type:${t} from peer:${this.peer}`)}}answer(e,t={}){if(this._localStream)return void em.warn("Local stream already exists on this MediaConnection. Are you answering a call twice?");for(let n of(this._localStream=e,t&&t.sdpTransform&&(this.options.sdpTransform=t.sdpTransform),this._negotiator.startConnection({...this.options._payload,_stream:e}),this.provider._getMessages(this.connectionId)))this.handleMessage(n);this._open=!0}close(){this._negotiator&&(this._negotiator.cleanup(),this._negotiator=null),this._localStream=null,this._remoteStream=null,this.provider&&(this.provider._removeConnection(this),this.provider=null),this.options&&this.options._stream&&(this.options._stream=null),this.open&&(this._open=!1,super.emit("close"))}constructor(e,t,n){super(e,t,n),this._localStream=this.options._stream,this.connectionId=this.options.connectionId||eB.ID_PREFIX+ef.randomToken(),this._negotiator=new eO(this),this._localStream&&this._negotiator.startConnection({_stream:this._localStream,originator:!0})}}eB.ID_PREFIX="mc_";class eU{_buildRequest(e){let t=this._options.secure?"https":"http",{host:n,port:r,path:i,key:s}=this._options,o=new URL(`${t}://${n}:${r}${i}${s}/${e}`);return o.searchParams.set("ts",`${Date.now()}${Math.random()}`),o.searchParams.set("version",eI),fetch(o.href,{referrerPolicy:this._options.referrerPolicy})}async retrieveId(){try{let e=await this._buildRequest("id");if(200!==e.status)throw Error(`Error. Status:${e.status}`);return e.text()}catch(t){em.error("Error retrieving ID",t);let e="";throw"/"===this._options.path&&this._options.host!==ef.CLOUD_HOST&&(e=" If you passed in a `path` to your self-hosted PeerServer, you'll also need to pass in that same path when creating a new Peer."),Error("Could not get an ID from the server."+e)}}async listAllPeers(){try{let e=await this._buildRequest("peers");if(200!==e.status){if(401===e.status){let e="";throw e=this._options.host===ef.CLOUD_HOST?"It looks like you're using the cloud server. You can email team@peerjs.com to enable peer listing for your API key.":"You need to enable `allow_discovery` on your self-hosted PeerServer to use this feature.",Error("It doesn't look like you have permission to list peers IDs. "+e)}throw Error(`Error. Status:${e.status}`)}return e.json()}catch(e){throw em.error("Error retrieving list peers",e),Error("Could not get list peers from the server."+e)}}constructor(e){this._options=e}}class eF extends ej{get type(){return ek.Data}_initializeDataChannel(e){this.dataChannel=e,this.dataChannel.onopen=()=>{em.log(`DC#${this.connectionId} dc connection success`),this._open=!0,this.emit("open")},this.dataChannel.onmessage=e=>{em.log(`DC#${this.connectionId} dc onmessage:`,e.data)},this.dataChannel.onclose=()=>{em.log(`DC#${this.connectionId} dc closed for:`,this.peer),this.close()}}close(e){if(e?.flush)return void this.send({__peerData:{type:"close"}});this._negotiator&&(this._negotiator.cleanup(),this._negotiator=null),this.provider&&(this.provider._removeConnection(this),this.provider=null),this.dataChannel&&(this.dataChannel.onopen=null,this.dataChannel.onmessage=null,this.dataChannel.onclose=null,this.dataChannel=null),this.open&&(this._open=!1,super.emit("close"))}send(e,t=!1){return this.open?this._send(e,t):void this.emitError(ew.NotOpenYet,"Connection is not open. You should listen for the `open` event before sending messages.")}async handleMessage(e){let t=e.payload;switch(e.type){case eD.Answer:await this._negotiator.handleSDP(e.type,t.sdp);break;case eD.Candidate:await this._negotiator.handleCandidate(t.candidate);break;default:em.warn("Unrecognized message type:",e.type,"from peer:",this.peer)}}constructor(e,t,n){super(e,t,n),this.connectionId=this.options.connectionId||eF.ID_PREFIX+eh(),this.label=this.options.label||this.connectionId,this.reliable=!!this.options.reliable,this._negotiator=new eO(this),this._negotiator.startConnection(this.options._payload||{originator:!0,reliable:this.reliable})}}eF.ID_PREFIX="dc_",eF.MAX_BUFFERED_AMOUNT=8388608;class eN extends eF{get bufferSize(){return this._bufferSize}_initializeDataChannel(e){super._initializeDataChannel(e),this.dataChannel.binaryType="arraybuffer",this.dataChannel.addEventListener("message",e=>this._handleDataMessage(e))}_bufferedSend(e){(this._buffering||!this._trySend(e))&&(this._buffer.push(e),this._bufferSize=this._buffer.length)}_trySend(e){if(!this.open)return!1;if(this.dataChannel.bufferedAmount>eF.MAX_BUFFERED_AMOUNT)return this._buffering=!0,setTimeout(()=>{this._buffering=!1,this._tryBuffer()},50),!1;try{this.dataChannel.send(e)}catch(e){return em.error(`DC#:${this.connectionId} Error when sending:`,e),this._buffering=!0,this.close(),!1}return!0}_tryBuffer(){if(!this.open||0===this._buffer.length)return;let e=this._buffer[0];this._trySend(e)&&(this._buffer.shift(),this._bufferSize=this._buffer.length,this._tryBuffer())}close(e){if(e?.flush)return void this.send({__peerData:{type:"close"}});this._buffer=[],this._bufferSize=0,super.close()}constructor(...e){super(...e),this._buffer=[],this._bufferSize=0,this._buffering=!1}}class ez extends eN{close(e){super.close(e),this._chunkedData={}}_handleDataMessage({data:e}){let t=i(e),n=t.__peerData;if(n)return"close"===n.type?void this.close():void this._handleChunk(t);this.emit("data",t)}_handleChunk(e){let t=e.__peerData,n=this._chunkedData[t]||{data:[],count:0,total:e.total};if(n.data[e.n]=new Uint8Array(e.data),n.count++,this._chunkedData[t]=n,n.total===n.count){delete this._chunkedData[t];let e=function(e){let t=0;for(let n of e)t+=n.byteLength;let n=new Uint8Array(t),r=0;for(let t of e)n.set(t,r),r+=t.byteLength;return n}(n.data);this._handleDataMessage({data:e})}}_send(e,t){let n=s(e);return n instanceof Promise?this._send_blob(n):!t&&n.byteLength>this.chunker.chunkedMTU?void this._sendChunks(n):void this._bufferedSend(n)}async _send_blob(e){let t=await e;if(t.byteLength>this.chunker.chunkedMTU)return void this._sendChunks(t);this._bufferedSend(t)}_sendChunks(e){let t=this.chunker.chunk(e);for(let e of(em.log(`DC#${this.connectionId} Try to send ${t.length} chunks...`),t))this.send(e,!0)}constructor(e,t,r){super(e,t,r),this.chunker=new n,this.serialization=eE.Binary,this._chunkedData={}}}class e$ extends eN{_handleDataMessage({data:e}){super.emit("data",e)}_send(e,t){this._bufferedSend(e)}constructor(...e){super(...e),this.serialization=eE.None}}class eV extends eN{_handleDataMessage({data:e}){let t=this.parse(this.decoder.decode(e)),n=t.__peerData;if(n&&"close"===n.type)return void this.close();this.emit("data",t)}_send(e,t){let n=this.encoder.encode(this.stringify(e));if(n.byteLength>=ef.chunkedMTU)return void this.emitError(ew.MessageToBig,"Message too big for JSON channel");this._bufferedSend(n)}constructor(...e){super(...e),this.serialization=eE.JSON,this.encoder=new TextEncoder,this.decoder=new TextDecoder,this.stringify=JSON.stringify,this.parse=JSON.parse}}class eG extends eL{get id(){return this._id}get options(){return this._options}get open(){return this._open}get socket(){return this._socket}get connections(){let e=Object.create(null);for(let[t,n]of this._connections)e[t]=n;return e}get destroyed(){return this._destroyed}get disconnected(){return this._disconnected}_createServerConnection(){let e=new eM(this._options.secure,this._options.host,this._options.port,this._options.path,this._options.key,this._options.pingInterval);return e.on(ex.Message,e=>{this._handleMessage(e)}),e.on(ex.Error,e=>{this._abort(eR.SocketError,e)}),e.on(ex.Disconnected,()=>{this.disconnected||(this.emitError(eR.Network,"Lost connection to server."),this.disconnect())}),e.on(ex.Close,()=>{this.disconnected||this._abort(eR.SocketClosed,"Underlying socket is already closed.")}),e}_initialize(e){this._id=e,this.socket.start(e,this._options.token)}_handleMessage(e){let t=e.type,n=e.payload,r=e.src;switch(t){case eD.Open:this._lastServerId=this.id,this._open=!0,this.emit("open",this.id);break;case eD.Error:this._abort(eR.ServerError,n.msg);break;case eD.IdTaken:this._abort(eR.UnavailableID,`ID "${this.id}" is taken`);break;case eD.InvalidKey:this._abort(eR.InvalidKey,`API KEY "${this._options.key}" is invalid`);break;case eD.Leave:em.log(`Received leave message from ${r}`),this._cleanupPeer(r),this._connections.delete(r);break;case eD.Expire:this.emitError(eR.PeerUnavailable,`Could not connect to peer ${r}`);break;case eD.Offer:{let e=n.connectionId,t=this.getConnection(r,e);if(t&&(t.close(),em.warn(`Offer received for existing Connection ID:${e}`)),n.type===ek.Media){let i=new eB(r,this,{connectionId:e,_payload:n,metadata:n.metadata});t=i,this._addConnection(r,t),this.emit("call",i)}else{if(n.type!==ek.Data)return void em.warn(`Received malformed connection type:${n.type}`);let i=new this._serializers[n.serialization](r,this,{connectionId:e,_payload:n,metadata:n.metadata,label:n.label,serialization:n.serialization,reliable:n.reliable});t=i,this._addConnection(r,t),this.emit("connection",i)}for(let n of this._getMessages(e))t.handleMessage(n);break}default:{if(!n)return void em.warn(`You received a malformed message from ${r} of type ${t}`);let i=n.connectionId,s=this.getConnection(r,i);s&&s.peerConnection?s.handleMessage(e):i?this._storeMessage(i,e):em.warn("You received an unrecognized message:",e)}}}_storeMessage(e,t){this._lostMessages.has(e)||this._lostMessages.set(e,[]),this._lostMessages.get(e).push(t)}_getMessages(e){let t=this._lostMessages.get(e);return t?(this._lostMessages.delete(e),t):[]}connect(e,t={}){if(t={serialization:"default",...t},this.disconnected){em.warn("You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect, or call reconnect on this peer if you believe its ID to still be available."),this.emitError(eR.Disconnected,"Cannot connect to new Peer after disconnecting from server.");return}let n=new this._serializers[t.serialization](e,this,t);return this._addConnection(e,n),n}call(e,t,n={}){if(this.disconnected){em.warn("You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect."),this.emitError(eR.Disconnected,"Cannot connect to new Peer after disconnecting from server.");return}if(!t)return void em.error("To call a peer, you must provide a stream from your browser's `getUserMedia`.");let r=new eB(e,this,{...n,_stream:t});return this._addConnection(e,r),r}_addConnection(e,t){em.log(`add connection ${t.type}:${t.connectionId} to peerId:${e}`),this._connections.has(e)||this._connections.set(e,[]),this._connections.get(e).push(t)}_removeConnection(e){let t=this._connections.get(e.peer);if(t){let n=t.indexOf(e);-1!==n&&t.splice(n,1)}this._lostMessages.delete(e.connectionId)}getConnection(e,t){let n=this._connections.get(e);if(!n)return null;for(let e of n)if(e.connectionId===t)return e;return null}_delayedAbort(e,t){setTimeout(()=>{this._abort(e,t)},0)}_abort(e,t){em.error("Aborting!"),this.emitError(e,t),this._lastServerId?this.disconnect():this.destroy()}destroy(){this.destroyed||(em.log(`Destroy peer with ID:${this.id}`),this.disconnect(),this._cleanup(),this._destroyed=!0,this.emit("close"))}_cleanup(){for(let e of this._connections.keys())this._cleanupPeer(e),this._connections.delete(e);this.socket.removeAllListeners()}_cleanupPeer(e){let t=this._connections.get(e);if(t)for(let e of t)e.close()}disconnect(){if(this.disconnected)return;let e=this.id;em.log(`Disconnect peer with ID:${e}`),this._disconnected=!0,this._open=!1,this.socket.close(),this._lastServerId=e,this._id=null,this.emit("disconnected",e)}reconnect(){if(this.disconnected&&!this.destroyed)em.log(`Attempting reconnection to server with ID ${this._lastServerId}`),this._disconnected=!1,this._initialize(this._lastServerId);else if(this.destroyed)throw Error("This peer cannot reconnect to the server. It has already been destroyed.");else if(this.disconnected||this.open)throw Error(`Peer ${this.id} cannot reconnect because it is not disconnected from the server!`);else em.error("In a hurry? We're still trying to make the initial connection!")}listAllPeers(e=e=>{}){this._api.listAllPeers().then(t=>e(t)).catch(e=>this._abort(eR.ServerError,e))}constructor(e,t){let n;if(super(),this._serializers={raw:e$,json:eV,binary:ez,"binary-utf8":ez,default:ez},this._id=null,this._lastServerId=null,this._destroyed=!1,this._disconnected=!1,this._open=!1,this._connections=new Map,this._lostMessages=new Map,e&&e.constructor==Object?t=e:e&&(n=e.toString()),t={debug:0,host:ef.CLOUD_HOST,port:ef.CLOUD_PORT,path:"/",key:eG.DEFAULT_KEY,token:ef.randomToken(),config:ef.defaultConfig,referrerPolicy:"strict-origin-when-cross-origin",serializers:{},...t},this._options=t,this._serializers={...this._serializers,...this.options.serializers},"/"===this._options.host&&(this._options.host=window.location.hostname),this._options.path&&("/"!==this._options.path[0]&&(this._options.path="/"+this._options.path),"/"!==this._options.path[this._options.path.length-1]&&(this._options.path+="/")),void 0===this._options.secure&&this._options.host!==ef.CLOUD_HOST?this._options.secure=ef.isSecure():this._options.host==ef.CLOUD_HOST&&(this._options.secure=!0),this._options.logFunction&&em.setLogFunction(this._options.logFunction),em.logLevel=this._options.debug||0,this._api=new eU(t),this._socket=this._createServerConnection(),!ef.supports.audioVideo&&!ef.supports.data)return void this._delayedAbort(eR.BrowserIncompatible,"The current browser does not support WebRTC");if(n&&!ef.validateId(n))return void this._delayedAbort(eR.InvalidID,`ID "${n}" is invalid`);n?this._initialize(n):this._api.retrieveId().then(e=>this._initialize(e)).catch(e=>this._abort(eR.ServerError,e))}}eG.DEFAULT_KEY="peerjs",window.peerjs={Peer:eG,util:ef},window.Peer=eG})();
+
+</script>
+<script>
 (() => {
 'use strict';
 const __mods = {};
@@ -617,7 +643,7 @@ return { NT, WIND, GREEN, RED, WHITE, FLOWER, JOKER, SUIT_NAMES, suitTile, tileS
 
 __mods["card-data"] = (() => {
 const CARD = null;
-const ENCRYPTED_CARD = "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";
+const ENCRYPTED_CARD = "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";
 
 return { CARD, ENCRYPTED_CARD };
 })();
@@ -982,294 +1008,6 @@ async function decryptCard(hexKey, payload = ENCRYPTED_CARD) {
 }
 
 return { cardEncrypted, normalizeKey, decryptCard };
-})();
-
-__mods["game"] = (() => {
-// Game engine: deal, Charleston, draw/discard/call loop, joker swaps, scoring.
-// UI-agnostic. Each player has a controller with async methods:
-//   charleston(game, seat, stage) -> tiles to pass (stage.blind allows < 3)
-//   voteSecond(game, seat) -> bool
-//   courtesy(game, seat, max) -> tiles (0..max)
-//   turn(game, seat, drawn) -> { type: 'discard', tile } | { type: 'mahjong' }
-//   claim(game, seat, tile, from, opts) -> null | { type: 'mahjong' } | { type: 'expose', size }
-// Seats: 0 = you, 1 = right, 2 = across, 3 = left. Play passes 0 -> 1 -> 2 -> 3.
-
-const { JOKER, makeTiles, shuffle, countsOf } = __mods["tiles"];
-const { winningVariant, callSizes } = __mods["hands"];
-
-const SEAT_WINDS = ['East', 'South', 'West', 'North'];
-const DIRS = { right: 1, across: 2, left: 3 };
-
-class Game {
-  constructor({ players, dealer = 0, rng = Math.random, emit = () => {} }) {
-    this.players = players.map((p, i) => ({ ...p, seat: i, hand: [], exposures: [] }));
-    this.dealer = dealer;
-    this.rng = rng;
-    this.emit = emit;
-    this.wall = [];
-    this.discards = [];
-    this.turn = dealer;
-    this.phase = 'deal';
-    this.result = null;
-  }
-
-  seatWind(seat) { return SEAT_WINDS[(seat - this.dealer + 4) % 4]; }
-
-  deal() {
-    this.wall = shuffle(makeTiles(), this.rng);
-    for (let r = 0; r < 13; r++) for (let k = 0; k < 4; k++) this.players[(this.dealer + k) % 4].hand.push(this.wall.pop());
-    this.players[this.dealer].hand.push(this.wall.pop());
-    this.emit('deal', {});
-  }
-
-  async play() {
-    this.deal();
-    this.phase = 'charleston';
-    await this.charleston();
-    this.phase = 'play';
-    return this.mainLoop();
-  }
-
-  // ------------------------------------------------------------ Charleston
-
-  async charlestonStage(stage) {
-    const n = this.players.length;
-    const out = new Array(n);
-    const offset = DIRS[stage.dir];
-    // Computer players choose first so a blind pass can forward incoming tiles.
-    const order = [...this.players.keys()].sort((a, b) => (this.players[a].human ? 1 : 0) - (this.players[b].human ? 1 : 0));
-    for (const s of order) {
-      const p = this.players[s];
-      let tiles = await p.controller.charleston(this, s, stage);
-      tiles = tiles.filter(t => t.t !== JOKER && p.hand.includes(t)).slice(0, 3);
-      if (tiles.length < 3 && !stage.blind) throw new Error('Must pass 3 tiles');
-      out[s] = tiles;
-    }
-    // Blind passing: fill the shortfall from tiles arriving from the opposite direction.
-    for (let s = 0; s < n; s++) out[s].forEach(t => this.removeTile(this.players[s], t));
-    // Work out every shortfall before forwarding anything, so a player whose
-    // tiles were forwarded isn't mistaken for a blind passer.
-    const shorts = out.map(tiles => 3 - tiles.length);
-    for (let s = 0; s < n; s++) {
-      const from = (s - offset + n) % n;
-      const short = shorts[s];
-      if (short > 0) {
-        const incoming = out[from];
-        const forwarded = incoming.splice(incoming.length - short, short);
-        out[s] = out[s].concat(forwarded);
-        out[s].blindCount = short;
-      }
-    }
-    const received = [];
-    for (let s = 0; s < n; s++) {
-      const to = (s + offset) % n;
-      received[to] = out[s];
-    }
-    for (let s = 0; s < n; s++) this.players[s].hand.push(...received[s]);
-    this.emit('charleston', { stage, received });
-  }
-
-  async charleston() {
-    const first = [
-      { dir: 'right', blind: false, label: 'First Charleston: pass right', round: 1, step: 1 },
-      { dir: 'across', blind: false, label: 'First Charleston: pass across', round: 1, step: 2 },
-      { dir: 'left', blind: true, label: 'First Charleston: pass left', round: 1, step: 3 },
-    ];
-    const second = [
-      { dir: 'left', blind: false, label: 'Second Charleston: pass left', round: 2, step: 1 },
-      { dir: 'across', blind: false, label: 'Second Charleston: pass across', round: 2, step: 2 },
-      { dir: 'right', blind: true, label: 'Second Charleston: pass right', round: 2, step: 3 },
-    ];
-    for (const st of first) await this.charlestonStage(st);
-    const votes = [];
-    for (let s = 0; s < 4; s++) votes[s] = await this.players[s].controller.voteSecond(this, s);
-    const go = votes.every(Boolean);
-    this.emit('second-vote', { votes, go });
-    if (go) for (const st of second) await this.charlestonStage(st);
-    await this.courtesy();
-    this.emit('charleston-done', {});
-  }
-
-  async courtesy() {
-    // Partners across agree on the smaller number of tiles (0-3).
-    for (const [a, b] of [[0, 2], [1, 3]]) {
-      const pa = this.players[a], pb = this.players[b];
-      // The computer partner states its number first; the human then picks up to that.
-      const [first, second] = pa.human ? [b, a] : pb.human ? [a, b] : [a, b];
-      const p1 = this.players[first], p2 = this.players[second];
-      let t1 = await p1.controller.courtesy(this, first, 3);
-      let t2 = await p2.controller.courtesy(this, second, t1.length);
-      const k = Math.min(t1.length, t2.length);
-      t1 = t1.filter(t => t.t !== JOKER).slice(0, k);
-      t2 = t2.filter(t => t.t !== JOKER).slice(0, k);
-      const m = Math.min(t1.length, t2.length);
-      t1 = t1.slice(0, m); t2 = t2.slice(0, m);
-      t1.forEach(t => this.removeTile(p1, t));
-      t2.forEach(t => this.removeTile(p2, t));
-      p1.hand.push(...t2);
-      p2.hand.push(...t1);
-      this.emit('courtesy', { a: first, b: second, count: m, gotA: t2, gotB: t1 });
-    }
-  }
-
-  // ------------------------------------------------------------ helpers
-
-  removeTile(p, tile) {
-    const i = p.hand.indexOf(tile);
-    if (i < 0) throw new Error('Tile not in hand');
-    p.hand.splice(i, 1);
-  }
-
-  claimOptions(seat, tile) {
-    const p = this.players[seat];
-    const counts = countsOf(p.hand);
-    const sizes = callSizes(counts, p.exposures, tile.t);
-    counts[tile.t]++;
-    const mahjong = tile.t !== JOKER && !!winningVariant(counts, p.exposures);
-    return { sizes, mahjong };
-  }
-
-  checkMahjong(seat) {
-    const p = this.players[seat];
-    return winningVariant(countsOf(p.hand), p.exposures);
-  }
-
-  availableSwaps(seat) {
-    const p = this.players[seat];
-    const out = [];
-    this.players.forEach((q, owner) => q.exposures.forEach((e, ei) => {
-      if (!e.tiles.some(x => x.t === JOKER)) return;
-      const tile = p.hand.find(x => x.t === e.t);
-      if (tile) out.push({ owner, ei, tile, t: e.t });
-    }));
-    return out;
-  }
-
-  swapJoker(seat, swap) {
-    const p = this.players[seat];
-    const e = this.players[swap.owner].exposures[swap.ei];
-    const ji = e.tiles.findIndex(x => x.t === JOKER);
-    if (ji < 0 || swap.tile.t !== e.t || !p.hand.includes(swap.tile)) throw new Error('Bad swap');
-    const joker = e.tiles[ji];
-    this.removeTile(p, swap.tile);
-    e.tiles[ji] = swap.tile;
-    p.hand.push(joker);
-    this.emit('swap', { seat, owner: swap.owner, t: e.t, joker });
-  }
-
-  expose(seat, tile, size, from) {
-    const p = this.players[seat];
-    const use = [];
-    for (const x of p.hand) if (x.t === tile.t && use.length < size - 1) use.push(x);
-    for (const x of p.hand) if (x.t === JOKER && use.length < size - 1) use.push(x);
-    if (use.length < size - 1) throw new Error('Not enough tiles to expose');
-    use.forEach(x => this.removeTile(p, x));
-    const exp = { t: tile.t, size, tiles: [...use, tile], from };
-    p.exposures.push(exp);
-    return exp;
-  }
-
-  // ------------------------------------------------------------ main loop
-
-  async mainLoop() {
-    let cur = this.dealer;
-    let needDraw = false;
-    let calledFrom = null;
-    for (;;) {
-      const p = this.players[cur];
-      this.turn = cur;
-      let drawn = null;
-      if (needDraw) {
-        if (!this.wall.length) return this.finishWall();
-        drawn = this.wall.pop();
-        p.hand.push(drawn);
-        this.emit('draw', { seat: cur, tile: drawn });
-      }
-      this.emit('turn', { seat: cur, drawn, afterCall: calledFrom != null });
-      const act = await p.controller.turn(this, cur, drawn);
-      if (act.type === 'mahjong') {
-        const win = this.checkMahjong(cur);
-        if (win) return this.finishWin(cur, win, calledFrom, calledFrom == null);
-        throw new Error('Invalid mahjong declared');
-      }
-      const tile = act.tile;
-      this.removeTile(p, tile);
-      this.discards.push({ tile, seat: cur });
-      this.lastDiscard = { tile, seat: cur };
-      this.emit('discard', { seat: cur, tile });
-
-      const claim = await this.collectClaims(cur, tile);
-      this.lastDiscard = null;
-      if (claim) {
-        this.discards.pop();
-        const q = this.players[claim.seat];
-        if (claim.type === 'mahjong') {
-          q.hand.push(tile);
-          const win = this.checkMahjong(claim.seat);
-          if (!win) throw new Error('Invalid mahjong claim');
-          this.emit('call', { seat: claim.seat, from: cur, tile, type: 'mahjong' });
-          return this.finishWin(claim.seat, win, cur, false);
-        }
-        const exp = this.expose(claim.seat, tile, claim.size, cur);
-        this.emit('call', { seat: claim.seat, from: cur, tile, type: 'expose', exp });
-        calledFrom = cur;
-        cur = claim.seat;
-        needDraw = false;
-        continue;
-      }
-      cur = (cur + 1) % 4;
-      needDraw = true;
-      calledFrom = null;
-    }
-  }
-
-  async collectClaims(from, tile) {
-    if (tile.t === JOKER) return null;
-    const claims = [];
-    for (let k = 1; k < 4; k++) {
-      const s = (from + k) % 4;
-      const opts = this.claimOptions(s, tile);
-      if (!opts.mahjong && !opts.sizes.length) continue;
-      const c = await this.players[s].controller.claim(this, s, tile, from, opts);
-      if (!c) continue;
-      if (c.type === 'mahjong' && !opts.mahjong) continue;
-      if (c.type === 'expose' && !opts.sizes.includes(c.size)) continue;
-      claims.push({ ...c, seat: s });
-    }
-    const win = claims.find(c => c.type === 'mahjong');
-    const pick = win || claims[0] || null;
-    const lost = claims.filter(c => c !== pick);
-    if (pick && lost.length) this.emit('claim-lost', { winner: pick, lost });
-    return pick;
-  }
-
-  finishWin(seat, win, from, selfDrawn) {
-    const p = this.players[seat];
-    const allTiles = [...p.hand, ...p.exposures.flatMap(e => e.tiles)];
-    const jokerless = !allTiles.some(x => x.t === JOKER) && win.v.hand.jokerlessBonus;
-    const base = win.v.pts * (jokerless ? 2 : 1);
-    const pay = [0, 0, 0, 0];
-    for (let q = 0; q < 4; q++) {
-      if (q === seat) continue;
-      const amt = selfDrawn || q === from ? base * 2 : base;
-      pay[q] -= amt;
-      pay[seat] += amt;
-    }
-    this.phase = 'over';
-    this.result = { type: 'win', seat, variant: win.v, match: win, from, selfDrawn, jokerless, base, pay };
-    this.emit('end', this.result);
-    return this.result;
-  }
-
-  finishWall() {
-    this.phase = 'over';
-    this.result = { type: 'wall', pay: [0, 0, 0, 0] };
-    this.emit('end', this.result);
-    return this.result;
-  }
-}
-
-return { SEAT_WINDS, Game };
 })();
 
 __mods["ai"] = (() => {
@@ -1690,6 +1428,544 @@ class AIController {
 return { AIController };
 })();
 
+__mods["net"] = (() => {
+// Playing together on two devices. The host's device runs the game; the guest's
+// device shows the table from the guest's seat and sends its decisions back.
+//
+// Connection: PeerJS (vendor/peerjs.min.js) introduces the two devices through
+// its free public server, then they talk directly over WebRTC. With "?net=local"
+// in the address, two tabs of the same browser connect through a
+// BroadcastChannel instead (used for testing).
+//
+// Seats are numbered from the host's point of view. Everything sent to the guest
+// is turned around so the guest's own seat is 0, and other players' concealed
+// tiles are hidden ({ id: -1, t: -1 }).
+
+const { AIController } = __mods["controllers"];
+
+const PREFIX = 'mj26-';
+const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const GUEST_SEAT = 2; // the guest sits across from the host
+
+const makeCode = () => Array.from({ length: 6 }, () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)]).join('');
+const normalizeCode = s => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+const localMode = () => typeof location !== 'undefined' && new URLSearchParams(location.search).get('net') === 'local';
+
+// ---------------------------------------------------------------- transport
+// A link is { send(obj), onMessage(fn), onClose(fn), close() }.
+
+function peerLink(conn, peer) {
+  const closers = [];
+  let closed = false;
+  const fireClose = () => { if (!closed) { closed = true; closers.forEach(f => f()); } };
+  conn.on('close', fireClose);
+  conn.on('error', fireClose);
+  if (peer) peer.on('disconnected', () => { try { peer.reconnect(); } catch { /* ignore */ } });
+  return {
+    send: obj => { if (!closed) conn.send(JSON.stringify(obj)); },
+    onMessage: fn => conn.on('data', d => fn(typeof d === 'string' ? JSON.parse(d) : d)),
+    onClose: fn => closers.push(fn),
+    close: () => { fireClose(); try { conn.close(); } catch { /* ignore */ } if (peer) setTimeout(() => peer.destroy(), 300); },
+  };
+}
+
+function localLink(code, me, other) {
+  const ch = new BroadcastChannel(PREFIX + code);
+  const handlers = [], closers = [];
+  let closed = false;
+  const fireClose = () => { if (!closed) { closed = true; closers.forEach(f => f()); ch.close(); } };
+  ch.onmessage = e => {
+    if (e.data.to !== me) return;
+    if (e.data.bye) fireClose(); else handlers.forEach(f => f(e.data.body));
+  };
+  addEventListener('pagehide', () => { if (!closed) ch.postMessage({ to: other, bye: true }); });
+  return {
+    send: body => { if (!closed) ch.postMessage({ to: other, body }); },
+    onMessage: fn => handlers.push(fn),
+    onClose: fn => closers.push(fn),
+    close: () => { if (!closed) ch.postMessage({ to: other, bye: true }); fireClose(); },
+  };
+}
+
+const friendly = e => {
+  const type = e && e.type;
+  if (type === 'peer-unavailable') return 'No game with that code. Check it with the host.';
+  if (type === 'network' || type === 'server-error' || type === 'socket-error' || type === 'socket-closed') return 'Couldn\'t reach the connection service. Check your internet connection.';
+  if (type === 'browser-incompatible') return 'This browser can\'t make direct connections.';
+  return (e && e.message) || 'Connection failed.';
+};
+
+// Host: waits for one guest. onGuest(link) fires when the guest connects.
+function hostRoom(code, { onGuest, onError }) {
+  if (localMode()) {
+    const ch = new BroadcastChannel(PREFIX + code + '-lobby');
+    ch.onmessage = e => { if (e.data === 'hello') { ch.postMessage('welcome'); ch.close(); onGuest(localLink(code, 'host', 'guest')); } };
+    return { close: () => ch.close() };
+  }
+  if (!window.Peer) { onError('Play together isn\'t available in this version.'); return { close() {} }; }
+  const peer = new window.Peer(PREFIX + code);
+  let taken = false;
+  peer.on('connection', conn => {
+    if (taken) { conn.on('open', () => conn.close()); return; } // one guest only
+    taken = true;
+    conn.on('open', () => onGuest(peerLink(conn, peer)));
+  });
+  peer.on('error', e => onError(e.type === 'unavailable-id' ? 'That code is in use. Try again.' : friendly(e), e.type));
+  return { close: () => { if (!taken) peer.destroy(); } };
+}
+
+// Guest: connects to a host's code. onOpen(link) fires once connected.
+function joinRoom(code, { onOpen, onError }) {
+  if (localMode()) {
+    const ch = new BroadcastChannel(PREFIX + code + '-lobby');
+    const link = localLink(code, 'guest', 'host');
+    ch.onmessage = e => { if (e.data === 'welcome') { ch.close(); onOpen(link); } };
+    ch.postMessage('hello');
+    const t = setTimeout(() => { ch.close(); onError('No game with that code. Check it with the host.'); }, 3000);
+    ch.addEventListener('message', () => clearTimeout(t));
+    return { close: () => ch.close() };
+  }
+  if (!window.Peer) { onError('Play together isn\'t available in this version.'); return { close() {} }; }
+  const peer = new window.Peer();
+  peer.on('open', () => {
+    const conn = peer.connect(PREFIX + code, { reliable: true });
+    conn.on('open', () => onOpen(peerLink(conn, peer)));
+  });
+  peer.on('error', e => onError(friendly(e)));
+  return { close: () => peer.destroy() };
+}
+
+// ---------------------------------------------------------------- views (host side)
+
+const rot = (s, seat) => (s == null ? s : (s - seat + 4) % 4);
+const HIDDEN = { id: -1, t: -1 };
+
+// The table as `seat` sees it. `reveal` shows every hand (end of a hand).
+function viewFor(game, seat, totals, reveal = false) {
+  const order = [0, 1, 2, 3].map(i => (i + seat) % 4);
+  return {
+    dealer: rot(game.dealer, seat),
+    turn: rot(game.turn, seat),
+    phase: game.phase,
+    wallCount: game.wall.length,
+    players: order.map(hs => {
+      const p = game.players[hs];
+      return {
+        name: p.name,
+        level: p.level,
+        human: !!p.human,
+        hand: hs === seat || reveal ? p.hand : p.hand.map(() => HIDDEN),
+        exposures: p.exposures.map(e => ({ t: e.t, size: e.size, tiles: e.tiles, from: rot(e.from, seat) })),
+      };
+    }),
+    discards: game.discards.map(d => ({ tile: d.tile, seat: rot(d.seat, seat) })),
+    lastDiscard: game.lastDiscard ? { tile: game.lastDiscard.tile, seat: rot(game.lastDiscard.seat, seat) } : null,
+    totals: order.map(hs => totals[hs]),
+  };
+}
+
+// Engine events turned to `seat`'s point of view, with other players' private tiles removed.
+function eventFor(name, d, seat) {
+  const r = s => rot(s, seat);
+  const mine = s => s === seat;
+  switch (name) {
+    case 'charleston': {
+      const received = [0, 1, 2, 3].map(i => ((i + seat) % 4 === seat ? d.received[seat] : []));
+      return { stage: d.stage, received };
+    }
+    case 'second-vote': return { go: d.go, votes: [0, 1, 2, 3].map(i => d.votes[(i + seat) % 4]) };
+    case 'courtesy': return { a: r(d.a), b: r(d.b), count: d.count, gotA: mine(d.a) ? d.gotA : [], gotB: mine(d.b) ? d.gotB : [] };
+    case 'draw': return { seat: r(d.seat), tile: mine(d.seat) ? d.tile : HIDDEN };
+    case 'turn': return { seat: r(d.seat), drawn: mine(d.seat) ? d.drawn : null, afterCall: d.afterCall };
+    case 'discard': return { seat: r(d.seat), tile: d.tile };
+    case 'call': return { ...d, seat: r(d.seat), from: r(d.from), exp: d.exp ? { ...d.exp, from: r(d.exp.from) } : d.exp };
+    case 'swap': return { ...d, seat: r(d.seat), owner: r(d.owner) };
+    case 'claim-lost': return { winner: { ...d.winner, seat: r(d.winner.seat) }, lost: d.lost.map(c => ({ ...c, seat: r(c.seat) })) };
+    default: return d;
+  }
+}
+
+function resultFor(res, seat) {
+  if (res.type !== 'win') return { type: 'wall', pay: [0, 1, 2, 3].map(i => res.pay[(i + seat) % 4]) };
+  return {
+    type: 'win',
+    seat: rot(res.seat, seat),
+    from: rot(res.from, seat),
+    selfDrawn: res.selfDrawn,
+    jokerless: res.jokerless,
+    base: res.base,
+    pay: [0, 1, 2, 3].map(i => res.pay[(i + seat) % 4]),
+    handId: res.variant.hand.id,
+    variantIdx: res.variant.hand.variants.indexOf(res.variant),
+  };
+}
+
+// ---------------------------------------------------------------- remote player (host side)
+
+const ids = tiles => tiles.map(t => t.id);
+
+// Drives the guest's seat by asking the guest's device. If the guest leaves,
+// a computer player takes over (including any question still waiting).
+class RemoteController {
+  constructor(link, { sendState, fallbackLevel = 'medium', pause }) {
+    this.link = link;
+    this.sendState = sendState;
+    this.pending = new Map();
+    this.nextId = 1;
+    this.ai = null;
+    this.fallbackLevel = fallbackLevel;
+    this.pause = pause;
+    this.onSwap = null;
+    link.onMessage(m => {
+      if (m.t === 'answer' && this.pending.has(m.id)) { const p = this.pending.get(m.id); this.pending.delete(m.id); p.resolve(m.value); }
+      if (m.t === 'swap' && this.onSwap) this.onSwap(m);
+    });
+  }
+
+  // The guest left: answer anything outstanding with a computer player's choice.
+  takeOver() {
+    if (this.ai) return;
+    this.ai = new AIController(this.fallbackLevel, { pause: this.pause });
+    for (const p of this.pending.values()) p.fallback().then(p.resolveRaw);
+    this.pending.clear();
+  }
+
+  ask(game, seat, method, args, fallback, decode) {
+    if (this.ai) return fallback();
+    this.sendState(game);
+    return new Promise(resolveRaw => {
+      const id = this.nextId++;
+      this.pending.set(id, { resolve: v => resolveRaw(decode(v)), resolveRaw, fallback });
+      this.link.send({ t: 'ask', id, method, args });
+    });
+  }
+
+  byIds(game, seat, list) {
+    const hand = game.players[seat].hand;
+    return (list || []).map(id => hand.find(t => t.id === id)).filter(Boolean);
+  }
+
+  charleston(game, seat, stage) {
+    return this.ask(game, seat, 'charleston', [stage], () => this.ai.charleston(game, seat, stage), v => this.byIds(game, seat, v));
+  }
+  voteSecond(game, seat) {
+    return this.ask(game, seat, 'voteSecond', [], () => this.ai.voteSecond(game, seat), v => !!v);
+  }
+  courtesy(game, seat, max) {
+    return this.ask(game, seat, 'courtesy', [max], () => this.ai.courtesy(game, seat, max), v => this.byIds(game, seat, v).slice(0, max));
+  }
+  turn(game, seat, drawn) {
+    return this.ask(game, seat, 'turn', [drawn], () => this.ai.turn(game, seat, drawn), v => {
+      if (v && v.type === 'mahjong' && game.checkMahjong(seat)) return { type: 'mahjong' };
+      const tile = this.byIds(game, seat, [v && v.tileId])[0] || game.players[seat].hand[game.players[seat].hand.length - 1];
+      return { type: 'discard', tile };
+    });
+  }
+  claim(game, seat, tile, from, opts) {
+    return this.ask(game, seat, 'claim', [tile, rot(from, seat), opts], () => this.ai.claim(game, seat, tile, from, opts), v => v || null);
+  }
+}
+
+// Serializes a local Human answer for sending to the host.
+function encodeAnswer(method, value) {
+  if (method === 'charleston' || method === 'courtesy') return ids(value || []);
+  if (method === 'turn') return value.type === 'mahjong' ? { type: 'mahjong' } : { type: 'discard', tileId: value.tile.id };
+  return value;
+}
+
+return { GUEST_SEAT, makeCode, normalizeCode, hostRoom, joinRoom, viewFor, eventFor, resultFor, RemoteController, encodeAnswer };
+})();
+
+__mods["game"] = (() => {
+// Game engine: deal, Charleston, draw/discard/call loop, joker swaps, scoring.
+// UI-agnostic. Each player has a controller with async methods:
+//   charleston(game, seat, stage) -> tiles to pass (stage.blind allows < 3)
+//   voteSecond(game, seat) -> bool
+//   courtesy(game, seat, max) -> tiles (0..max)
+//   turn(game, seat, drawn) -> { type: 'discard', tile } | { type: 'mahjong' }
+//   claim(game, seat, tile, from, opts) -> null | { type: 'mahjong' } | { type: 'expose', size }
+// Seats: 0 = you, 1 = right, 2 = across, 3 = left. Play passes 0 -> 1 -> 2 -> 3.
+
+const { JOKER, makeTiles, shuffle, countsOf } = __mods["tiles"];
+const { winningVariant, callSizes } = __mods["hands"];
+
+const SEAT_WINDS = ['East', 'South', 'West', 'North'];
+const DIRS = { right: 1, across: 2, left: 3 };
+
+class Game {
+  constructor({ players, dealer = 0, rng = Math.random, emit = () => {} }) {
+    this.players = players.map((p, i) => ({ ...p, seat: i, hand: [], exposures: [] }));
+    this.dealer = dealer;
+    this.rng = rng;
+    this.emit = emit;
+    this.wall = [];
+    this.discards = [];
+    this.turn = dealer;
+    this.phase = 'deal';
+    this.result = null;
+  }
+
+  seatWind(seat) { return SEAT_WINDS[(seat - this.dealer + 4) % 4]; }
+
+  deal() {
+    this.wall = shuffle(makeTiles(), this.rng);
+    for (let r = 0; r < 13; r++) for (let k = 0; k < 4; k++) this.players[(this.dealer + k) % 4].hand.push(this.wall.pop());
+    this.players[this.dealer].hand.push(this.wall.pop());
+    this.emit('deal', {});
+  }
+
+  async play() {
+    this.deal();
+    this.phase = 'charleston';
+    await this.charleston();
+    this.phase = 'play';
+    return this.mainLoop();
+  }
+
+  // ------------------------------------------------------------ Charleston
+
+  async charlestonStage(stage) {
+    const n = this.players.length;
+    const out = new Array(n);
+    const offset = DIRS[stage.dir];
+    const take = async s => {
+      const p = this.players[s];
+      let tiles = await p.controller.charleston(this, s, stage);
+      tiles = tiles.filter(t => t.t !== JOKER && p.hand.includes(t)).slice(0, 3);
+      if (tiles.length < 3 && !stage.blind) throw new Error('Must pass 3 tiles');
+      out[s] = tiles;
+    };
+    // Computer players choose first, so a blind pass can forward incoming tiles;
+    // human players (local or remote) all choose at the same time.
+    const seats = [...this.players.keys()];
+    for (const s of seats.filter(s => !this.players[s].human)) await take(s);
+    await Promise.all(seats.filter(s => this.players[s].human).map(take));
+    // Blind passing: fill the shortfall from tiles arriving from the opposite direction.
+    for (let s = 0; s < n; s++) out[s].forEach(t => this.removeTile(this.players[s], t));
+    // Work out every shortfall before forwarding anything, so a player whose
+    // tiles were forwarded isn't mistaken for a blind passer.
+    const shorts = out.map(tiles => 3 - tiles.length);
+    for (let s = 0; s < n; s++) {
+      const from = (s - offset + n) % n;
+      const short = shorts[s];
+      if (short > 0) {
+        const incoming = out[from];
+        const forwarded = incoming.splice(incoming.length - short, short);
+        out[s] = out[s].concat(forwarded);
+        out[s].blindCount = short;
+      }
+    }
+    const received = [];
+    for (let s = 0; s < n; s++) {
+      const to = (s + offset) % n;
+      received[to] = out[s];
+    }
+    for (let s = 0; s < n; s++) this.players[s].hand.push(...received[s]);
+    this.emit('charleston', { stage, received });
+  }
+
+  async charleston() {
+    const first = [
+      { dir: 'right', blind: false, label: 'First Charleston: pass right', round: 1, step: 1 },
+      { dir: 'across', blind: false, label: 'First Charleston: pass across', round: 1, step: 2 },
+      { dir: 'left', blind: true, label: 'First Charleston: pass left', round: 1, step: 3 },
+    ];
+    const second = [
+      { dir: 'left', blind: false, label: 'Second Charleston: pass left', round: 2, step: 1 },
+      { dir: 'across', blind: false, label: 'Second Charleston: pass across', round: 2, step: 2 },
+      { dir: 'right', blind: true, label: 'Second Charleston: pass right', round: 2, step: 3 },
+    ];
+    for (const st of first) await this.charlestonStage(st);
+    const votes = await Promise.all(this.players.map((p, s) => p.controller.voteSecond(this, s)));
+    const go = votes.every(Boolean);
+    this.emit('second-vote', { votes, go });
+    if (go) for (const st of second) await this.charlestonStage(st);
+    await this.courtesy();
+    this.emit('charleston-done', {});
+  }
+
+  async courtesy() {
+    // Partners across agree on the smaller number of tiles (0-3).
+    for (const [a, b] of [[0, 2], [1, 3]]) {
+      const pa = this.players[a], pb = this.players[b];
+      // The computer partner states its number first; the human then picks up to that.
+      const [first, second] = pa.human ? [b, a] : pb.human ? [a, b] : [a, b];
+      const p1 = this.players[first], p2 = this.players[second];
+      let t1 = await p1.controller.courtesy(this, first, 3);
+      let t2 = await p2.controller.courtesy(this, second, t1.length);
+      const k = Math.min(t1.length, t2.length);
+      t1 = t1.filter(t => t.t !== JOKER).slice(0, k);
+      t2 = t2.filter(t => t.t !== JOKER).slice(0, k);
+      const m = Math.min(t1.length, t2.length);
+      t1 = t1.slice(0, m); t2 = t2.slice(0, m);
+      t1.forEach(t => this.removeTile(p1, t));
+      t2.forEach(t => this.removeTile(p2, t));
+      p1.hand.push(...t2);
+      p2.hand.push(...t1);
+      this.emit('courtesy', { a: first, b: second, count: m, gotA: t2, gotB: t1 });
+    }
+  }
+
+  // ------------------------------------------------------------ helpers
+
+  removeTile(p, tile) {
+    const i = p.hand.indexOf(tile);
+    if (i < 0) throw new Error('Tile not in hand');
+    p.hand.splice(i, 1);
+  }
+
+  claimOptions(seat, tile) {
+    const p = this.players[seat];
+    const counts = countsOf(p.hand);
+    const sizes = callSizes(counts, p.exposures, tile.t);
+    counts[tile.t]++;
+    const mahjong = tile.t !== JOKER && !!winningVariant(counts, p.exposures);
+    return { sizes, mahjong };
+  }
+
+  checkMahjong(seat) {
+    const p = this.players[seat];
+    return winningVariant(countsOf(p.hand), p.exposures);
+  }
+
+  availableSwaps(seat) {
+    const p = this.players[seat];
+    const out = [];
+    this.players.forEach((q, owner) => q.exposures.forEach((e, ei) => {
+      if (!e.tiles.some(x => x.t === JOKER)) return;
+      const tile = p.hand.find(x => x.t === e.t);
+      if (tile) out.push({ owner, ei, tile, t: e.t });
+    }));
+    return out;
+  }
+
+  swapJoker(seat, swap) {
+    const p = this.players[seat];
+    const e = this.players[swap.owner].exposures[swap.ei];
+    const ji = e.tiles.findIndex(x => x.t === JOKER);
+    if (ji < 0 || swap.tile.t !== e.t || !p.hand.includes(swap.tile)) throw new Error('Bad swap');
+    const joker = e.tiles[ji];
+    this.removeTile(p, swap.tile);
+    e.tiles[ji] = swap.tile;
+    p.hand.push(joker);
+    this.emit('swap', { seat, owner: swap.owner, t: e.t, joker });
+  }
+
+  expose(seat, tile, size, from) {
+    const p = this.players[seat];
+    const use = [];
+    for (const x of p.hand) if (x.t === tile.t && use.length < size - 1) use.push(x);
+    for (const x of p.hand) if (x.t === JOKER && use.length < size - 1) use.push(x);
+    if (use.length < size - 1) throw new Error('Not enough tiles to expose');
+    use.forEach(x => this.removeTile(p, x));
+    const exp = { t: tile.t, size, tiles: [...use, tile], from };
+    p.exposures.push(exp);
+    return exp;
+  }
+
+  // ------------------------------------------------------------ main loop
+
+  async mainLoop() {
+    let cur = this.dealer;
+    let needDraw = false;
+    let calledFrom = null;
+    for (;;) {
+      const p = this.players[cur];
+      this.turn = cur;
+      let drawn = null;
+      if (needDraw) {
+        if (!this.wall.length) return this.finishWall();
+        drawn = this.wall.pop();
+        p.hand.push(drawn);
+        this.emit('draw', { seat: cur, tile: drawn });
+      }
+      this.emit('turn', { seat: cur, drawn, afterCall: calledFrom != null });
+      const act = await p.controller.turn(this, cur, drawn);
+      if (act.type === 'mahjong') {
+        const win = this.checkMahjong(cur);
+        if (win) return this.finishWin(cur, win, calledFrom, calledFrom == null);
+        throw new Error('Invalid mahjong declared');
+      }
+      const tile = act.tile;
+      this.removeTile(p, tile);
+      this.discards.push({ tile, seat: cur });
+      this.lastDiscard = { tile, seat: cur };
+      this.emit('discard', { seat: cur, tile });
+
+      const claim = await this.collectClaims(cur, tile);
+      this.lastDiscard = null;
+      if (claim) {
+        this.discards.pop();
+        const q = this.players[claim.seat];
+        if (claim.type === 'mahjong') {
+          q.hand.push(tile);
+          const win = this.checkMahjong(claim.seat);
+          if (!win) throw new Error('Invalid mahjong claim');
+          this.emit('call', { seat: claim.seat, from: cur, tile, type: 'mahjong' });
+          return this.finishWin(claim.seat, win, cur, false);
+        }
+        const exp = this.expose(claim.seat, tile, claim.size, cur);
+        this.emit('call', { seat: claim.seat, from: cur, tile, type: 'expose', exp });
+        calledFrom = cur;
+        cur = claim.seat;
+        needDraw = false;
+        continue;
+      }
+      cur = (cur + 1) % 4;
+      needDraw = true;
+      calledFrom = null;
+    }
+  }
+
+  async collectClaims(from, tile) {
+    if (tile.t === JOKER) return null;
+    const claims = [];
+    for (let k = 1; k < 4; k++) {
+      const s = (from + k) % 4;
+      const opts = this.claimOptions(s, tile);
+      if (!opts.mahjong && !opts.sizes.length) continue;
+      const c = await this.players[s].controller.claim(this, s, tile, from, opts);
+      if (!c) continue;
+      if (c.type === 'mahjong' && !opts.mahjong) continue;
+      if (c.type === 'expose' && !opts.sizes.includes(c.size)) continue;
+      claims.push({ ...c, seat: s });
+    }
+    const win = claims.find(c => c.type === 'mahjong');
+    const pick = win || claims[0] || null;
+    const lost = claims.filter(c => c !== pick);
+    if (pick && lost.length) this.emit('claim-lost', { winner: pick, lost });
+    return pick;
+  }
+
+  finishWin(seat, win, from, selfDrawn) {
+    const p = this.players[seat];
+    const allTiles = [...p.hand, ...p.exposures.flatMap(e => e.tiles)];
+    const jokerless = !allTiles.some(x => x.t === JOKER) && win.v.hand.jokerlessBonus;
+    const base = win.v.pts * (jokerless ? 2 : 1);
+    const pay = [0, 0, 0, 0];
+    for (let q = 0; q < 4; q++) {
+      if (q === seat) continue;
+      const amt = selfDrawn || q === from ? base * 2 : base;
+      pay[q] -= amt;
+      pay[seat] += amt;
+    }
+    this.phase = 'over';
+    this.result = { type: 'win', seat, variant: win.v, match: win, from, selfDrawn, jokerless, base, pay };
+    this.emit('end', this.result);
+    return this.result;
+  }
+
+  finishWall() {
+    this.phase = 'over';
+    this.result = { type: 'wall', pay: [0, 0, 0, 0] };
+    this.emit('end', this.result);
+    return this.result;
+  }
+}
+
+return { SEAT_WINDS, Game };
+})();
+
 __mods["render"] = (() => {
 // HTML builders for tiles, card lines and groups.
 const { tileSuit, tileNum, tileName, GREEN, RED, WHITE, FLOWER, WIND, suitTile } = __mods["tiles"];
@@ -2060,6 +2336,7 @@ __mods["ui"] = (() => {
 const { JOKER, countsOf, sortTiles, tileName } = __mods["tiles"];
 const { HANDS, SECTIONS, closestHands, explainVariant, dist, compatList, cardLoaded, loadCard } = __mods["hands"];
 const { cardEncrypted, normalizeKey, decryptCard } = __mods["unlock"];
+const { GUEST_SEAT, makeCode, normalizeCode, hostRoom, joinRoom, viewFor, eventFor, resultFor, RemoteController, encodeAnswer } = __mods["net"];
 const { Game } = __mods["game"];
 const { AIController } = __mods["controllers"];
 const { tileHTML, cardHandHTML, variantHTML, exposureHTML, SIZE_NAMES, codes } = __mods["render"];
@@ -2100,6 +2377,9 @@ const S = {
 };
 
 const hintsMode = () => (S.tutorial ? 'coach' : settings.hints);
+// Scores for the current game: saved solo scores, or a session tally when playing together.
+const sc = () => (S.net && S.net.scores) || scores;
+const freshScores = () => ({ games: 0, totals: [0, 0, 0, 0], wins: [0, 0, 0, 0], dealer: 0 });
 
 // ================================================================ screens
 
@@ -2130,9 +2410,14 @@ document.querySelectorAll('.seg').forEach(seg => seg.addEventListener('click', e
 
 $('#btnPlay').onclick = async () => {
   if (S.game && !S.over && !(await ask('Abandon game?', 'The game in progress will be lost.', 'Abandon'))) return;
+  leaveNet();
   startGame(false);
 };
 $('#btnResume').onclick = () => { show('table'); render(); };
+$('#btnTogether').onclick = async () => {
+  if (S.game && !S.over && !(await ask('Abandon game?', 'The game in progress will be lost.', 'Abandon'))) return;
+  openTogether('menu');
+};
 $('#btnTutorial').onclick = () => openLessons('tutorial');
 $('#btnRules').onclick = () => openLessons('rules');
 $('#btnHomeCard').onclick = () => openCard();
@@ -2291,7 +2576,7 @@ function startGame(tutorial) {
   S.tutorial = tutorial;
   S.seen = new Set();
   S.tipQueue = [];
-  newHand(tutorial ? 0 : scores.dealer);
+  newHand(tutorial ? 0 : sc().dealer);
 }
 
 function newHand(dealer) {
@@ -2300,8 +2585,15 @@ function newHand(dealer) {
     name, level: i ? level : null, human: i === 0,
     controller: i === 0 ? Human : null,
   }));
-  const game = new Game({ players, dealer, emit: (n, d) => onEvent(game, n, d) });
-  for (let i = 1; i < 4; i++) game.players[i].controller = new AIController(level, { pause: pauser(game) });
+  const host = S.net && S.net.role === 'host' ? S.net : null;
+  if (host) {
+    // After the guest leaves, their seat stays with a computer player.
+    players[0].name = settings.name || 'Host';
+    Object.assign(players[GUEST_SEAT], { name: host.guestName, level: host.closed ? level : null, human: !host.closed, controller: host.remote });
+  }
+  const game = new Game({ players, dealer, emit: (n, d) => { onEvent(game, n, d); if (host) hostSend(game, n, d); } });
+  for (let i = 1; i < 4; i++) if (!game.players[i].controller) game.players[i].controller = new AIController(level, { pause: pauser(game) });
+  if (host) host.link.send({ t: 'newhand' });
   Object.assign(S, {
     game, mode: 'wait', stage: null, over: false, resolve: null, claim: null,
     msg: '', msgCoach: false, flash: {}, drawnId: null,
@@ -2431,7 +2723,7 @@ const Human = {
       const c = Coach.coachCourtesy(game, max);
       S.rec = new Set(c.rec);
       setMsg(c.html, true);
-    } else setMsg(max ? `Courtesy pass: Jade will trade up to ${max} tile${max > 1 ? 's' : ''}. Select 0–${max}.` : 'Courtesy pass: Jade doesn\'t want to trade.');
+    } else setMsg(max ? `Courtesy pass with ${esc(nameOf(2))}: trade up to ${max} tile${max > 1 ? 's' : ''}. Select 0–${max}.` : `Courtesy pass: ${esc(nameOf(2))} doesn't want to trade.`);
     render();
     const ids = await wait();
     return game.players[0].hand.filter(x => ids.includes(x.id));
@@ -2511,6 +2803,7 @@ function discard(tile) {
 }
 
 function doSwap(s) {
+  if (S.net && S.net.role === 'guest') { S.net.link.send({ t: 'swap', owner: s.owner, ei: s.ei, tileId: s.tile.id }); return; }
   S.game.swapJoker(0, s);
   S.newIds = new Set(S.game.players[0].hand.filter(x => x.t === JOKER).slice(-1).map(x => x.id));
   turnHint();
@@ -2599,8 +2892,9 @@ $('#btnMenu').onclick = () => {
       $('#btnMenu').click();
     } else if (m === 'home') { closeSheet(); renderHome(); }
     else if (m === 'quit') {
-      ask('Quit this hand?', 'It won\'t be scored.', 'Quit').then(yes => {
+      ask(S.net ? 'Leave this game?' : 'Quit this hand?', S.net ? 'The game together ends for both of you.' : 'It won\'t be scored.', S.net ? 'Leave' : 'Quit').then(yes => {
         if (!yes) return;
+        leaveNet();
         S.game = null; S.over = true;
         renderHome();
       });
@@ -2612,7 +2906,7 @@ $('#btnMenu').onclick = () => {
 
 // Running total for a seat, e.g. "+150", "−50", "0".
 function totalHTML(seat) {
-  const v = scores.totals[seat];
+  const v = (S.net && S.net.role === 'guest' ? S.net.totals : sc().totals)[seat];
   return `<span class="total ${v > 0 ? 'pos' : v < 0 ? 'neg' : ''}" title="Total points">${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(v)}</span>`;
 }
 
@@ -2623,7 +2917,7 @@ function oppHTML(seat) {
   const turn = g.phase === 'play' && g.turn === seat;
   return `<div class="opp ${turn ? 'turn' : ''}">
     <div class="opp-head"><span class="wind ${wind === 'East' ? 'east' : ''}">${wind[0]}</span><span class="name">${esc(p.name)}</span><span class="count" title="tiles in hand">${p.hand.length}</span></div>
-    <div class="opp-sub"><span class="where">${WHERE[seat]}</span><span class="lvl">${p.level}</span>${totalHTML(seat)}</div>
+    <div class="opp-sub"><span class="where">${WHERE[seat]}</span><span class="lvl">${p.human ? 'player' : p.level}</span>${totalHTML(seat)}</div>
     <div class="exposures">${p.exposures.map(e => exposureHTML(e, 'xs')).join('')}</div>
     ${S.flash[seat] ? `<span class="flash">${S.flash[seat]}</span>` : ''}
   </div>`;
@@ -2760,11 +3054,13 @@ window.addEventListener('resize', () => render());
 function onGameOver(res) {
   S.over = true;
   S.mode = 'over';
-  scores.games++;
-  res.pay.forEach((v, i) => { scores.totals[i] += v; });
-  if (res.type === 'win') scores.wins[res.seat]++;
-  if (!S.tutorial) scores.dealer = (S.game.dealer + 1) % 4;
-  save('mj26.scores', scores);
+  const s = sc();
+  s.games++;
+  res.pay.forEach((v, i) => { s.totals[i] += v; });
+  if (res.type === 'win') s.wins[res.seat]++;
+  if (!S.tutorial) s.dealer = (S.game.dealer + 1) % 4;
+  if (!S.net) save('mj26.scores', scores);
+  if (S.net && S.net.role === 'host') S.net.link.send({ t: 'end', view: viewFor(S.game, GUEST_SEAT, s.totals, true), result: resultFor(res, GUEST_SEAT), games: s.games });
   if (res.type === 'win') setMsg(`<b>${res.seat === 0 ? 'You win' : nameOf(res.seat) + ' wins'}</b> with ${res.variant.hand.label}.`);
   else setMsg('Wall game: the tiles ran out. Nobody scores.');
   render();
@@ -2804,20 +3100,27 @@ function showResult(res) {
   }
   const sign = v => (v > 0 ? `+${v}` : v < 0 ? `−${-v}` : '0');
   const cls = v => (v > 0 ? 'pos' : v < 0 ? 'neg' : '');
+  const guest = S.net && S.net.role === 'guest';
+  const totals = guest ? S.net.totals : sc().totals;
+  const games = guest ? S.net.games : sc().games;
   html += `<table class="pay"><tr class="pay-head"><td></td><td class="num">This hand</td><td class="num">Total</td></tr>${g.players.map((q, i) =>
-    `<tr><td>${nameOf(i)}${res.type === 'win' && i === res.from && !res.selfDrawn ? ' (discarded)' : ''}</td><td class="num ${cls(res.pay[i])}">${sign(res.pay[i])}</td><td class="num ${cls(scores.totals[i])}">${sign(scores.totals[i])}</td></tr>`).join('')}</table>`;
-  html += `<p class="pay-note">${scores.games} hand${scores.games === 1 ? '' : 's'} played${storageWorks ? '' : ' this session (this viewer can\'t save totals after you close it)'}. Totals are also on the home screen.</p>`;
-  html += `<details class="reveal"><summary>Show everyone's tiles</summary>${g.players.map((q, i) => `<div class="reveal-row"><div class="who">${nameOf(i)}${i ? ' · ' + q.level : ''}</div><div class="tiles">${q.exposures.map(e => exposureHTML(e, 'xs')).join('')}<span class="group">${sortTiles(q.hand).map(x => tileHTML(x.t, 'xs')).join('')}</span></div></div>`).join('')}</details>`;
+    `<tr><td>${esc(nameOf(i))}${res.type === 'win' && i === res.from && !res.selfDrawn ? ' (discarded)' : ''}</td><td class="num ${cls(res.pay[i])}">${sign(res.pay[i])}</td><td class="num ${cls(totals[i])}">${sign(totals[i])}</td></tr>`).join('')}</table>`;
+  html += S.net
+    ? `<p class="pay-note">${games} hand${games === 1 ? '' : 's'} played together. These totals last until you leave the game.</p>`
+    : `<p class="pay-note">${games} hand${games === 1 ? '' : 's'} played${storageWorks ? '' : ' this session (this viewer can\'t save totals after you close it)'}. Totals are also on the home screen.</p>`;
+  html += `<details class="reveal"><summary>Show everyone's tiles</summary>${g.players.map((q, i) => `<div class="reveal-row"><div class="who">${esc(nameOf(i))}${i ? ' · ' + (q.human ? 'player' : q.level) : ''}</div><div class="tiles">${q.exposures.map(e => exposureHTML(e, 'xs')).join('')}<span class="group">${sortTiles(q.hand).map(x => tileHTML(x.t, 'xs')).join('')}</span></div></div>`).join('')}</details>`;
   if (S.tutorial) html += '<p>That\'s the practice game! Play more practice hands with the coach, or start a real game from the home screen. You can turn the coach on in any game under <b>Hints</b>.</p>';
-  html += `<div class="btn-row"><button data-r="home">Home</button><button data-r="next" class="primary">${S.tutorial ? 'Practice again' : 'Next hand'}</button></div>`;
+  html += guest
+    ? `<div class="btn-row"><button data-r="leave">Leave game</button><button class="primary" disabled>Waiting for ${esc(nameOf(S.net.hostSeat))}…</button></div>`
+    : `<div class="btn-row"><button data-r="home">${S.net ? 'Leave game' : 'Home'}</button><button data-r="next" class="primary">${S.tutorial ? 'Practice again' : 'Next hand'}</button></div>`;
   openSheet(res.type === 'win' ? (res.seat === 0 ? 'Mahjong! You win' : `${nameOf(res.seat)} wins`) : 'Wall game', html);
   $('#sheetBody').onclick = e => {
     const b = e.target.closest('[data-r]');
     if (!b) return;
     closeSheet();
-    if (b.dataset.r === 'home') renderHome();
+    if (b.dataset.r === 'home' || b.dataset.r === 'leave') { if (S.net) leaveNet(); renderHome(); }
     else if (S.tutorial) newHand(0);
-    else newHand(scores.dealer);
+    else newHand(sc().dealer);
   };
 }
 
@@ -2840,6 +3143,201 @@ document.addEventListener('touchend', e => {
 }, { passive: true, capture: true });
 document.addEventListener('click', () => { if (pendingTap) { clearTimeout(pendingTap); pendingTap = null; } }, true);
 
+// ================================================================ playing together
+// The host runs the game; the guest (seat 2, across) mirrors it. See net.js.
+
+function hostSend(game, name, d) {
+  if (!S.net || S.net.role !== 'host' || name === 'end') return;
+  S.net.link.send({ t: 'event', view: viewFor(game, GUEST_SEAT, S.net.scores.totals), name, data: eventFor(name, d, GUEST_SEAT) });
+}
+
+function leaveNet() {
+  const n = S.net;
+  if (!n) return;
+  S.net = null;
+  if (n.lobby) n.lobby.close();
+  if (n.link) { n.link.send({ t: 'bye' }); n.link.close(); }
+}
+
+function startHosting(link, guestName) {
+  const net = { role: 'host', link, guestName, scores: freshScores(), lobby: S.net && S.net.lobby };
+  net.remote = new RemoteController(link, {
+    sendState: game => link.send({ t: 'state', view: viewFor(game, GUEST_SEAT, net.scores.totals) }),
+    pause: kind => pauser(S.game)(kind),
+    fallbackLevel: settings.level,
+  });
+  net.remote.onSwap = m => {
+    const g = S.game;
+    if (S.net !== net || !g || g.phase !== 'play' || g.turn !== GUEST_SEAT) return;
+    const owner = (m.owner + GUEST_SEAT) % 4;
+    const swap = g.availableSwaps(GUEST_SEAT).find(s => s.owner === owner && s.ei === m.ei && s.tile.id === m.tileId);
+    if (swap) g.swapJoker(GUEST_SEAT, swap);
+  };
+  link.onClose(() => {
+    if (S.net !== net) return;
+    net.closed = true;
+    net.remote.takeOver();
+    if (S.game) Object.assign(S.game.players[GUEST_SEAT], { human: false, level: settings.level });
+    toast(`${guestName} left. A computer player took over their seat.`, 3500);
+    render();
+  });
+  S.net = net;
+}
+
+function startGuest(link) {
+  const net = { role: 'guest', link, totals: [0, 0, 0, 0], games: 0, hostSeat: (4 - GUEST_SEAT) % 4 };
+  Object.assign(S, { net, tutorial: false, seen: new Set(), tipQueue: [], game: null, over: false });
+  link.onMessage(m => onHostMessage(net, m));
+  link.onClose(() => {
+    if (S.net !== net) return;
+    S.net = null; S.game = null; S.over = true;
+    if (S.resolve) S.resolve = null;
+    closeSheet();
+    renderHome();
+    toast('The game together ended: the host left or the connection dropped.', 4000);
+  });
+}
+
+// Guest: keep a local copy of the table as the host describes it.
+function applyView(view) {
+  let g = S.game;
+  if (!g) {
+    g = new Game({ players: view.players.map(p => ({ name: p.name, level: p.level, human: p.human, controller: null })), dealer: view.dealer });
+    Object.assign(S, { game: g, mode: 'wait', stage: null, over: false, resolve: null, claim: null, msg: '', msgCoach: false, flash: {}, drawnId: null });
+    S.selected.clear(); S.rec.clear(); S.newIds.clear();
+    closeSheet();
+    show('table');
+  }
+  Object.assign(g, { dealer: view.dealer, turn: view.turn, phase: view.phase, discards: view.discards, lastDiscard: view.lastDiscard, wall: new Array(view.wallCount).fill(null) });
+  view.players.forEach((p, i) => Object.assign(g.players[i], { name: p.name, level: p.level, human: p.human, hand: p.hand, exposures: p.exposures }));
+  S.net.totals = view.totals;
+}
+
+function decodeResult(r) {
+  if (r.type !== 'win') return r;
+  const v = HANDS[r.handId].variants[r.variantIdx];
+  const w = S.game.players[r.seat];
+  const match = compatList(w.exposures).find(c => c.v === v) || { v, strict: v.strict, flex: v.flex };
+  return { ...r, variant: v, match };
+}
+
+async function onHostMessage(net, m) {
+  if (S.net !== net) return;
+  if (m.t === 'bye') { net.link.close(); return; }
+  if (m.t === 'newhand') { S.game = null; S.over = false; closeSheet(); return; }
+  if (m.view) applyView(m.view);
+  if (m.t === 'event') onEvent(S.game, m.name, m.data);
+  else if (m.t === 'state') render();
+  else if (m.t === 'ask') {
+    const v = await Human[m.method](S.game, 0, ...m.args);
+    if (S.net === net) net.link.send({ t: 'answer', id: m.id, value: encodeAnswer(m.method, v) });
+  } else if (m.t === 'end') {
+    net.games = m.games;
+    const res = decodeResult(m.result);
+    S.over = true;
+    S.mode = 'over';
+    setMsg(res.type === 'win' ? `<b>${res.seat === 0 ? 'You win' : esc(nameOf(res.seat)) + ' wins'}</b> with ${res.variant.hand.label}.` : 'Wall game: the tiles ran out. Nobody scores.');
+    render();
+    setTimeout(() => { if (S.net === net && S.over) showResult(res); }, 700);
+  }
+}
+
+// ---------------------------------------------------------------- lobby
+
+const nameField = () => `<label class="field">Your name<input id="netName" maxlength="16" autocomplete="nickname" value="${esc(settings.name || '')}" placeholder="Your name"></label>`;
+function saveName() {
+  const el = $('#netName');
+  if (!el) return;
+  settings.name = el.value.trim().slice(0, 16);
+  save('mj26.settings', settings);
+}
+const setNetStatus = text => { const el = $('#netStatus'); if (el) el.textContent = text; };
+
+function openTogether(mode, code = '') {
+  if (mode === 'host') return hostLobby();
+  if (mode === 'join') return joinLobby(code);
+  leaveNet();
+  openSheet('Play together', `<p>Two players on two devices, plus two computer players. The host's device runs the game; the other player sits across from them. Both devices need the card key.</p>
+    ${nameField()}
+    <div class="menu-list"><button data-n="host" class="primary">Host a game</button><button data-n="join">Join a game</button></div>`);
+  $('#sheetBody').onclick = e => {
+    const b = e.target.closest('[data-n]');
+    if (!b) return;
+    saveName();
+    openTogether(b.dataset.n);
+  };
+}
+
+function hostLobby(tries = 0) {
+  leaveNet();
+  const code = makeCode();
+  const url = location.origin + location.pathname + location.search + '#join=' + code;
+  let started = false;
+  openSheet('Host a game', `<p>Give the other player this code, or send them the link.</p>
+    <div class="room-code">${code}</div>
+    <div class="btn-row"><button data-h="share">Share link</button><button data-h="copy">Copy link</button></div>
+    <p class="pay-note" id="netStatus">Waiting for someone to join…</p>
+    <p class="pay-note">Computer players: <b>${settings.level}</b> (change it on the home screen).</p>
+    <div class="btn-row"><button data-h="start" class="primary" disabled>Start game</button></div>`,
+  () => { if (!started) leaveNet(); });
+  const lobby = hostRoom(code, {
+    onGuest(link) {
+      link.onMessage(m => {
+        if (m.t !== 'join' || (S.net && S.net.link)) return;
+        startHosting(link, String(m.name || 'Guest').slice(0, 16));
+        S.net.lobby = lobby;
+        setNetStatus(`${S.net.guestName} joined!`);
+        const b = $('[data-h="start"]');
+        if (b) b.disabled = false;
+      });
+      link.onClose(() => { if (!started) { setNetStatus('They left. Waiting for someone to join…'); const b = $('[data-h="start"]'); if (b) b.disabled = true; } });
+    },
+    onError(msg, type) {
+      if (type === 'unavailable-id' && tries < 2) { hostLobby(tries + 1); return; }
+      setNetStatus(msg);
+    },
+  });
+  S.net = { role: 'lobby', lobby, scores: freshScores() };
+  $('#sheetBody').onclick = async e => {
+    const b = e.target.closest('[data-h]');
+    if (!b) return;
+    const act = b.dataset.h;
+    if (act === 'start' && S.net && S.net.role === 'host') { started = true; startGame(false); }
+    else if (act === 'share' && navigator.share) navigator.share({ title: 'Mahjong 2026', text: `Join my mahjong game. Code: ${code}`, url }).catch(() => {});
+    else if (act === 'share' || act === 'copy') {
+      try { await navigator.clipboard.writeText(url); toast('Link copied.'); } catch { toast(`Code: ${code}`); }
+    }
+  };
+}
+
+function joinLobby(code = '') {
+  leaveNet();
+  let attempt = null;
+  openSheet('Join a game', `<p>Enter the code from the host's screen.</p>
+    <input id="joinCode" class="code-input" maxlength="6" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" value="${esc(normalizeCode(code))}" placeholder="CODE" aria-label="Game code">
+    ${nameField()}
+    <div class="btn-row"><button data-j="join" class="primary">Join</button></div>
+    <p class="pay-note" id="netStatus"></p>`,
+  // Closing this screen cancels a join that hasn't connected yet (once connected, it closes when the host starts).
+  () => { if (attempt && !(S.net && S.net.role === 'guest')) attempt.close(); });
+  $('#sheetBody').onclick = e => {
+    if (!e.target.closest('[data-j="join"]')) return;
+    const c = normalizeCode($('#joinCode').value);
+    if (c.length !== 6) { setNetStatus('The code has 6 letters and numbers.'); return; }
+    saveName();
+    setNetStatus('Connecting…');
+    if (attempt) attempt.close();
+    attempt = joinRoom(c, {
+      onOpen(link) {
+        link.send({ t: 'join', name: settings.name || 'Guest' });
+        startGuest(link);
+        setNetStatus('Connected! Waiting for the host to start…');
+      },
+      onError: msg => setNetStatus(msg),
+    });
+  };
+}
+
 // ================================================================ start
 
 // Public build: the card is encrypted. Try a key from the link (#key=…) or the
@@ -2851,9 +3349,11 @@ let unlockError = null;
 const rememberKey = k => { try { localStorage.setItem('mj26.key', k); } catch { /* no storage */ } };
 
 async function boot() {
+  const hash = new URLSearchParams(location.hash.slice(1));
+  S.pendingJoin = normalizeCode(hash.get('join'));
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   if (!cardLoaded() && cardEncrypted()) {
-    const fromLink = normalizeKey(new URLSearchParams(location.hash.slice(1)).get('key'));
-    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    const fromLink = normalizeKey(hash.get('key'));
     let saved = null;
     try { saved = normalizeKey(localStorage.getItem('mj26.key')); } catch { /* no storage */ }
     let ok = false;
@@ -2862,7 +3362,13 @@ async function boot() {
     }
     if (!ok) { show('unlock'); return; }
   }
+  ready();
+}
+
+// Home, then the join screen if the page was opened from an invite link.
+function ready() {
   renderHome();
+  if (S.pendingJoin) { const code = S.pendingJoin; S.pendingJoin = ''; openTogether('join', code); }
 }
 
 $('#btnUnlock').onclick = async () => {
@@ -2874,7 +3380,7 @@ $('#btnUnlock').onclick = async () => {
     rememberKey(k);
     $('#keyInput').value = '';
     msg.textContent = '';
-    renderHome();
+    ready();
   } else {
     msg.textContent = unlockError && /secure/.test(unlockError.message) ? unlockError.message : 'That key doesn\'t open this card. Check it and try again.';
   }
