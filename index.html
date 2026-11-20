@@ -175,6 +175,11 @@ h1 { text-align: center; margin: 4px 0 0; font-size: 34px; letter-spacing: .01em
 .sub { text-align: center; margin: -10px 0 0; color: var(--muted); }
 .home-buttons { display: flex; flex-direction: column; gap: 10px; }
 .home-buttons button { min-height: 54px; font-size: 18px; }
+.home-buttons a.button {
+  display: flex; align-items: center; justify-content: center; min-height: 54px; font-size: 18px; font-weight: 600;
+  color: var(--text); background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; text-decoration: none;
+}
+.home-buttons a.button:active { transform: scale(.97); }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .settings { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
 .setting { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -555,7 +560,7 @@ html.bw .tile.joker { background: #000; color: #fff; }
 html.bw .tile.back { background: #9a9a9a; }
 html.bw .tile.exp, html.bw .hand .mine-exp .tile { filter: none; }
 html.bw .tile.sel { outline: 3px solid #000; outline-offset: 1px; }
-html.bw .tile.new { outline: 2px dashed #000; outline-offset: 2px; }
+html.bw .tile.new { outline: 2px solid #000; outline-offset: 2px; }
 html.bw .tile.last { outline: 3px double #000; outline-offset: 2px; }
 html.bw .tile.need { opacity: 1; filter: none; background: #fff; color: #999; border: 1px dashed #000; outline: none; }
 html.bw .tile.need.joker { color: #999; }
@@ -654,6 +659,7 @@ html.bw .away.dead { border-style: dashed; color: #555; }
       <button id="btnPlay" class="primary">New game</button>
       <button id="btnTogether">Play together</button>
       <button id="btnTutorial">Tutorial</button>
+      <a class="button" href="trainer.html">Charleston trainer</a>
       <div class="row2">
         <button id="btnHomeCard">The card</button>
         <button id="btnRules">Rules</button>
