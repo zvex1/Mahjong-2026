@@ -580,6 +580,20 @@ html.bw .away { background: #fff; color: #000; border: 1px solid #000; }
 html.bw .away.close { border-width: 2px; }
 html.bw .away.done { background: #000; color: #fff; }
 html.bw .away.dead { border-style: dashed; color: #555; }
+/* Without color, each suit gets its own number style that still reads on the smallest tiles:
+   bams plain, craks white on black, dots circled. */
+html.bw .tile.crak .n {
+  background: #000; color: #fff; border-radius: calc(var(--w) * .08);
+  padding: 0 calc(var(--w) * .1); line-height: 1.08;
+}
+html.bw .tile.dot .n {
+  display: flex; align-items: center; justify-content: center;
+  width: calc(var(--w) * .72); height: calc(var(--w) * .72); border-radius: 50%;
+  border: max(1px, calc(var(--w) * .055)) solid currentColor; font-size: calc(var(--w) * .46);
+}
+html.bw .tile.need.crak .n { background: #999; }
+html.bw .tile.need.dead.crak .n, html.bw .tile.need.jonly.crak .n { background: #555; color: #d4d4d4; }
+html.bw .tile.xs.dot .n, html.bw .rack .tile.dot .n { width: calc(var(--w) * .86); height: calc(var(--w) * .86); font-size: calc(var(--w) * .58); }
 
 </style>
 <script>
@@ -854,7 +868,7 @@ return { NT, WIND, GREEN, RED, WHITE, FLOWER, JOKER, SUIT_NAMES, suitTile, tileS
 
 __mods["card-data"] = (() => {
 const CARD = null;
-const ENCRYPTED_CARD = "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";
+const ENCRYPTED_CARD = "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";
 
 return { CARD, ENCRYPTED_CARD };
 })();
@@ -1234,7 +1248,7 @@ const { NT, JOKER, tileTotal, countsOf } = __mods["tiles"];
 const { dist, compatList, callSizes } = __mods["hands"];
 
 const W_MED = Array.from({ length: 32 }, (_, d) => Math.exp(-2.2 * d));
-const TUNE = { k: 1.3, def: 1, feas: 1, pw: 1, call: 'hard', prob: 1, K: 40, callBonus: 0.15, slip: 0.25 };
+const TUNE = { k: 1.3, def: 1, feas: 1, pw: 1, call: 'hard', prob: 1, K: 40, callBonus: 0.15, slip: 0.25, ch: 'flex', flexA: 1.1, perHand: 0, court: 'flex', courtKeep: 0.8, vote: 0, callMax: 6, callJ: 0 };
 let W_HARD = Array.from({ length: 32 }, (_, d) => Math.exp(-TUNE.k * d));
 function retune(o) { Object.assign(TUNE, o); W_HARD = Array.from({ length: 32 }, (_, d) => Math.exp(-TUNE.k * d)); }
 
@@ -1362,6 +1376,7 @@ function likelyHands(game, seat, limit = 3) {
 function evaluate(counts, compat, level, unseen) {
   let best = 99, sum = 0;
   const hard = level === 'hard';
+  const per = hard && TUNE.perHand ? new Map() : null;
   for (const c of compat) {
     const d = dist(c.strict, c.flex, counts);
     if (d < best) best = d;
@@ -1373,11 +1388,12 @@ function evaluate(counts, compat, level, unseen) {
         w = W_HARD[d] * (TUNE.pw ? c.v.pw : 1);
         if (TUNE.feas && unseen && d > 0) w *= feasibility(c, counts, unseen);
       }
-      sum += w;
+      if (per) { const id = c.v.hand.id; if (!(per.get(id) >= w)) per.set(id, w); } else sum += w;
     } else {
       sum += W_MED[d];
     }
   }
+  if (per) for (const w of per.values()) sum += w;
   return { best, sum, score: sum + 1e-7 * (40 - best) };
 }
 
@@ -1464,6 +1480,66 @@ function easyDiscard(game, seat, rng) {
   return pickTile(p.hand, cands[Math.floor(rng() * cands.length)]);
 }
 
+// Charleston value of a hand: how close it is to each card hand (its nearest
+// variant), summed over all hands with a gentle fall-off. A tile that only
+// duplicates another (a 4 in a second suit when any suit will do) costs little;
+// a tile that several hands need costs a lot. This keeps the hand flexible
+// instead of chasing the single nearest hand.
+function flexScore(counts, compat, a = TUNE.flexA) {
+  const best = new Map();
+  for (const c of compat) {
+    const d = dist(c.strict, c.flex, counts);
+    const id = c.v.hand.id, cur = best.get(id);
+    if (cur === undefined || d < cur) best.set(id, d);
+  }
+  let s = 0;
+  for (const d of best.values()) s += Math.exp(-a * d);
+  return s;
+}
+
+// For the coach: the card hands closest to this hand (within `slack` tiles of
+// the closest, and at least 6), and how many of them need given tiles: a hand
+// needs them if giving them up moves it further away.
+function nearbyFit(counts, compat, slack = 2) {
+  const byHand = new Map();
+  for (const c of compat) {
+    const d = dist(c.strict, c.flex, counts);
+    const id = c.v.hand.id, cur = byHand.get(id);
+    if (!cur) byHand.set(id, { hand: c.v.hand, d, cs: [c] });
+    else { cur.cs.push(c); if (d < cur.d) cur.d = d; }
+  }
+  const all = [...byHand.values()].sort((a, b) => a.d - b.d);
+  const min = all.length ? all[0].d : 99;
+  const near = all.filter((x, i) => x.d <= min + slack || i < 6);
+  const needing = types => {
+    for (const t of types) counts[t]--;
+    let n = 0;
+    for (const x of near) if (x.cs.every(c => dist(c.strict, c.flex, counts) > x.d)) n++;
+    for (const t of types) counts[t]++;
+    return n;
+  };
+  const secs = new Map();
+  for (const x of near) secs.set(x.hand.sec, (secs.get(x.hand.sec) || 0) + 1);
+  const lean = [...secs.entries()].sort((a, b) => b[1] - a[1]).map(([sec, n]) => ({ sec, n }));
+  return { near, min, lean, needing };
+}
+
+// Opponents with 2+ exposed groups, and for each tile type the share of the
+// hands they could still be making that use it (0 = safe to discard to them).
+function threats(game, seat) {
+  const out = [];
+  game.players.forEach((p, q) => {
+    if (q === seat || p.exposures.length < 2) return;
+    const comp = compatList(p.exposures);
+    if (!comp.length) return;
+    const use = new Float32Array(NT);
+    for (const c of comp) for (let t = 0; t < 35; t++) if (c.strict[t] + c.flex[t] > 0) use[t]++;
+    for (let t = 0; t < 35; t++) use[t] /= comp.length;
+    out.push({ seat: q, groups: p.exposures.length, use });
+  });
+  return out;
+}
+
 // Picks n tiles to pass (never jokers).
 function chooseCharleston(game, seat, level, n = 3, rng = Math.random) {
   const p = game.players[seat];
@@ -1479,9 +1555,10 @@ function chooseCharleston(game, seat, level, n = 3, rng = Math.random) {
       pick = types[Math.floor(rng() * types.length)];
     } else {
       let bs = -1;
+      const flex = level !== 'easy' && TUNE.ch === 'flex';
       for (const t of types) {
         counts[t]--;
-        const s = evaluate(counts, compat, level === 'easy' ? 'medium' : level, unseen).score;
+        const s = flex ? flexScore(counts, compat) : evaluate(counts, compat, level === 'easy' ? 'medium' : level, unseen).score;
         counts[t]++;
         if (s > bs) { bs = s; pick = t; }
       }
@@ -1503,18 +1580,19 @@ function courtesyCount(game, seat, level, rng = Math.random) {
   const p = game.players[seat];
   const counts = countsOf(p.hand);
   const compat = compatList([]);
-  const base = evaluate(counts, compat, level).score;
+  const score = TUNE.court === 'flex' ? () => flexScore(counts, compat) : () => evaluate(counts, compat, level).score;
+  const base = score();
   let n = 0;
   for (; n < 3; n++) {
     let bs = -1, pick = -1;
     for (const t of typesIn(counts)) {
       if (t === JOKER) continue;
       counts[t]--;
-      const s = evaluate(counts, compat, level).score;
+      const s = score();
       counts[t]++;
       if (s > bs) { bs = s; pick = t; }
     }
-    if (pick < 0 || bs < base * 0.8) break;
+    if (pick < 0 || bs < base * TUNE.courtKeep) break;
     counts[pick]--;
   }
   return n;
@@ -1524,7 +1602,7 @@ function wantsSecondCharleston(game, seat, level) {
   if (level === 'easy') return true;
   const p = game.players[seat];
   const { best } = evaluate(countsOf(p.hand), compatList([]), level);
-  return best > (level === 'hard' ? 3 : 2);
+  return best > (TUNE.vote || (level === 'hard' ? 3 : 2));
 }
 
 function simulateExposure(counts, t, size) {
@@ -1557,13 +1635,18 @@ function decideClaim(game, seat, level, tile, opts, rng = Math.random) {
   const lv = level === 'easy' ? 'medium' : level;
   const unseen = level === 'hard' ? unseenFor(game, seat) : null;
   const cur = evaluate(counts, compatList(p.exposures), lv, unseen);
+  // Too far from any hand: calling now would lock in a hand too early.
+  if (level !== 'easy' && cur.best > TUNE.callMax) return null;
   let choice = null, choiceEv = null;
   for (const size of opts.sizes) {
+    // Jokers this exposure would use up (naturals go in first).
+    const jUsed = Math.max(0, size - 1 - counts[tile.t]);
     const c2 = simulateExposure(counts, tile.t, size);
     const comp2 = compatList([...p.exposures, { t: tile.t, size }]);
     const after = bestAfterDiscard(c2, comp2, lv, unseen);
     let good;
-    if (level === 'hard' && TUNE.call === 'hard') good = after.sum > cur.sum * 1.2 || (after.best < cur.best && after.sum > cur.sum * 0.85);
+    const jx = TUNE.callJ && jUsed && after.best > 2 ? 1 + TUNE.callJ * jUsed : 1;
+    if (level === 'hard' && TUNE.call === 'hard') good = after.sum > cur.sum * 1.2 * jx || (after.best < cur.best && after.sum > cur.sum * 0.85 * jx);
     else good = after.best < cur.best && after.sum >= cur.sum * 0.6;
     if (good && (!choiceEv || after.score > choiceEv.score)) { choice = size; choiceEv = after; }
   }
@@ -1599,7 +1682,7 @@ function chooseSwap(game, seat, level) {
 
 
 
-return { TUNE, retune, unseenFor, needs, likelyHands, evaluate, rankDiscards, chooseDiscard, chooseCharleston, courtesyCount, wantsSecondCharleston, decideClaim, adviseClaim, chooseSwap, callSizes };
+return { TUNE, retune, unseenFor, needs, likelyHands, evaluate, rankDiscards, chooseDiscard, flexScore, nearbyFit, threats, chooseCharleston, courtesyCount, wantsSecondCharleston, decideClaim, adviseClaim, chooseSwap, callSizes };
 })();
 
 __mods["controllers"] = (() => {
@@ -2438,11 +2521,13 @@ function lessons() {
     html: `
       <h2>A few tips</h2>
       <ul>
-        <li><b>Stay flexible early.</b> Keep tiles that fit more than one hand until you know which way to go.</li>
+        <li><b>Stay flexible in the Charleston.</b> Don't chase one hand you're far from. Pass the tiles the fewest nearby hands need, and keep pairs and tiles that fit several hands.</li>
+        <li><b>Then commit.</b> By the end of the Charleston, or once about 7 tiles fit one hand, pick it and keep a backup that shares tiles with it.</li>
+        <li><b>Don't call too early.</b> An exposure locks you into a few hands. Call when you're well along, and expose natural tiles rather than jokers when you can.</li>
         <li><b>Keep your jokers.</b> They're the most valuable tiles in the game.</li>
         <li><b>Pungs and kongs are easier than pairs.</b> Jokers can fill them and you can call discards for them. Pairs and singles must be natural tiles.</li>
         <li><b>Count what's gone.</b> If three 5 Dots are already discarded, a hand that needs a pair of 5 Dots is nearly dead.</li>
-        <li><b>Watch exposures.</b> Late in the hand, avoid discarding tiles that fit an opponent's exposed groups.</li>
+        <li><b>Play safe when you're behind.</b> If an opponent has two or three groups exposed and you're still far away, discard tiles their hand can't use.</li>
       </ul>
       <h3>Practice game</h3>
       <p>Next you'll play against three <b>Easy</b> opponents. The coach will explain each step and highlight suggested tiles with a <b>dashed outline</b>. The <b>best hands</b> bar shows the card hands you're most likely to finish, counting tiles that are already discarded. Faded tiles are ones you still need, a small <b>J</b> marks a spot one of your jokers fills, and a crossed-out tile has no copies left (an outlined <b>J?</b> means only a joker can fill it now).</p>
@@ -2474,12 +2559,42 @@ function goneNote(game, c) {
   return parts.join(' and ');
 }
 
+// Where the hand is heading during the Charleston: the sections most of the
+// nearby hands come from, e.g. "Consecutive Run and 2026 hands".
+function leanText(fit) {
+  const top = fit.lean.slice(0, 2).filter((x, i) => i === 0 || x.n >= 2);
+  return top.map(x => `<b>${x.sec}</b>`).join(' and ') + (top.length ? ' hands' : '');
+}
+
+// Tiles to pass, explained by flexibility: how many of the hands you're
+// closest to would be set back without them.
+function passWhy(game, picks) {
+  const counts = countsOf(game.players[0].hand);
+  const fit = AI.nearbyFit(counts, compatList([]));
+  const n = fit.near.length;
+  const k = fit.needing(picks.map(x => x.t));
+  const them = picks.length === 1 ? 'it' : 'them';
+  const why = k === 0 ? `none of the ${n} hands you're closest to need ${them}`
+    : k * 2 <= n ? `only ${k} of the ${n} hands you're closest to ${k === 1 ? 'needs' : 'need'} ${them}`
+      : `${picks.length === 1 ? 'it costs' : 'they cost'} you the least (${k} of the ${n} hands you're closest to ${k === 1 ? 'needs' : 'need'} ${them})`;
+  // A kept tile that many hands need, to show what flexibility means.
+  let keep = -1, kn = 0;
+  for (let t = 0; t < counts.length; t++) {
+    if (!counts[t] || t === JOKER || picks.some(x => x.t === t)) continue;
+    const m = fit.needing([t]);
+    if (m > kn) { kn = m; keep = t; }
+  }
+  return { fit, why, keep, kn, n, k };
+}
+
 function coachCharleston(game, stage) {
-  const p = game.players[0];
   const picks = AI.chooseCharleston(game, 0, 'hard', 3);
-  const top = topHand(game);
-  let html = `Pass 3 tiles <b>${DIR_WORD[stage.dir]}</b>. I'd pass ${picks.map(x => T(x.t)).join('')}: they fit your best hands the least.`;
-  if (top) html += ` Your best bet is <b>${top.label}</b>.`;
+  const { fit, why, keep, kn, n, k } = passWhy(game, picks);
+  let html = `Pass 3 tiles <b>${DIR_WORD[stage.dir]}</b>. I'd pass ${picks.map(x => T(x.t)).join('')}: ${why}.`;
+  const lean = leanText(fit);
+  if (lean) html += ` Stay flexible; you lean toward ${lean}`;
+  if (lean && keep >= 0 && kn >= 3 && kn > k) html += `, so keep tiles like ${T(keep)} that many of them need (${kn} of ${n}).`;
+  else if (lean) html += '.';
   if (stage.blind) html += ' <i>Blind pass allowed.</i>';
   return { html, rec: picks.map(x => x.id) };
 }
@@ -2495,7 +2610,7 @@ function coachCourtesy(game, max) {
   const n = Math.min(max, AI.courtesyCount(game, 0, 'hard'));
   const picks = n ? AI.chooseCharleston(game, 0, 'hard', n) : [];
   const html = n
-    ? `Across will trade up to ${max}. I'd trade ${n}: ${picks.map(x => T(x.t)).join('')}.`
+    ? `Across will trade up to ${max}. I'd trade ${n}: ${picks.map(x => T(x.t)).join('')}; ${passWhy(game, picks).why}.`
     : `Across will trade up to ${max}, but all your tiles look useful. You can <b>Skip</b>.`;
   return { html, rec: picks.map(x => x.id) };
 }
@@ -2529,9 +2644,68 @@ function coachTurn(game) {
     }
   }
   html += `I'd discard ${T(best.t)}: ${why}`;
+  html += commitNote(game, top);
+  html += defenseNote(game, top, best.t);
   const swaps = game.availableSwaps(0);
   if (swaps.length) html += ` You can also <b>swap</b> your ${T(swaps[0].t)} for a joker on the table.`;
   return { html, rec: tile ? [tile.id] : [] };
+}
+
+// Once one hand clearly leads (about 7 tiles in place), say so once and name a
+// backup that shares tiles with it. Said again only when the leader changes.
+const committed = new WeakMap();
+function commitNote(game, top) {
+  if (!top || top.d > 7) return '';
+  const id = top.c.v.hand.id;
+  const said = committed.get(game) || new Set();
+  if (said.has(id)) return '';
+  const list = AI.likelyHands(game, 0, 3);
+  if (list.length > 1 && list[1].w > top.w * 0.8 && top.d > 3) return ''; // not clearly ahead yet
+  const first = !said.size;
+  said.add(id);
+  committed.set(game, said);
+  const p = game.players[0];
+  const counts = countsOf(p.hand);
+  // Backup: the next most likely hand that uses most of the same tiles.
+  let backup = null, shared = 0;
+  for (const r of list.slice(1)) {
+    let n = 0;
+    for (let t = 0; t < counts.length; t++) {
+      if (!counts[t]) continue;
+      const a = Math.min(counts[t], top.c.strict[t] + top.c.flex[t]);
+      const b = Math.min(counts[t], r.c.strict[t] + r.c.flex[t]);
+      n += Math.min(a, b);
+    }
+    if (n > shared) { shared = n; backup = r; }
+  }
+  let out = first
+    ? ` <b>Time to commit</b> to <b>${top.label}</b>: discard what it doesn't use.`
+    : ` <b>${top.label}</b> is now your best bet; switch to it.`;
+  if (backup && shared >= 3) out += ` Keep <b>${backup.c.v.hand.label}</b> (${backup.d} away) in mind as a backup; it shares ${shared} of your tiles.`;
+  return out;
+}
+
+// Defense: when an opponent has 2+ groups exposed and you're far from Mahjong,
+// say whether the suggested discard is safe and which tiles to hold back.
+function defenseNote(game, top, discard) {
+  const far = !top || top.d >= 4;
+  if (!far) return '';
+  const th = AI.threats(game, 0).sort((a, b) => b.groups - a.groups);
+  if (!th.length) return '';
+  const p = game.players[0];
+  const who = th.map(x => game.players[x.seat].name);
+  const risk = t => Math.max(...th.map(x => x.use[t]));
+  const names = who.length > 1 ? `${who.slice(0, -1).join(', ')} and ${who[who.length - 1]}` : who[0];
+  const shown = who.length > 1 ? 'have groups showing' : `has ${th[0].groups} groups showing`;
+  let out = ` <b>Play safe:</b> ${names} ${shown} and you're ${top ? `${top.d} tiles` : 'far'} away.`;
+  const r = risk(discard);
+  if (r === 0) out += ` ${T(discard)} is safe: none of the hands they could be making use it.`;
+  else if (r < 0.25) out += ` ${T(discard)} is fairly safe.`;
+  // The riskiest tile you hold: keep it back.
+  let hot = -1, hr = 0.5;
+  for (const x of p.hand) if (x.t !== JOKER && x.t !== discard && risk(x.t) > hr) { hr = risk(x.t); hot = x.t; }
+  if (hot >= 0) out += ` Hold on to ${T(hot)}: it fits most of what they could be making.`;
+  return out;
 }
 
 function coachClaim(game, tile, from, opts) {
@@ -2546,7 +2720,13 @@ function coachClaim(game, tile, from, opts) {
     for (const c of comp) { const d = dist(c.strict, c.flex, counts); if (d < bd) { bd = d; label = c.v.hand.label; } }
     return { html: `Call it! ${T(tile.t)} makes a <b>${SIZE_NAMES[adv.size]}</b> that fits <b>${label}</b>.`, pick: adv.size };
   }
-  return { html: `You could call ${T(tile.t)}, but I'd <b>pass</b>: exposing it would narrow your choice of hands without getting you much closer.`, pick: 'pass' };
+  const p = game.players[0];
+  const counts = countsOf(p.hand);
+  const top = topHand(game);
+  let reason = 'exposing it would narrow your choice of hands without getting you much closer';
+  if (top && top.d > AI.TUNE.callMax) reason = `it's too early (you're still ${top.d} tiles from your best hand), and an exposure would lock you in`;
+  else if (opts.sizes.length && Math.min(...opts.sizes) - 1 > counts[tile.t]) reason = 'you\'d have to expose jokers you may need later, and it wouldn\'t get you close enough';
+  return { html: `You could call ${T(tile.t)}, but I'd <b>pass</b>: ${reason}.`, pick: 'pass' };
 }
 
 // One-time explanations shown in a bubble during the practice game.
@@ -2589,7 +2769,7 @@ const NAMES = ['You', 'Rose', 'Jade', 'Lily'];
 const WHERE = ['', 'Right', 'Across', 'Left'];
 const LEVEL_DESC = {
   easy: 'Easy: picks a hand loosely, makes plenty of mistakes and rarely calls discards.',
-  medium: 'Medium: plays toward its closest hands, calls discards and swaps jokers, with the odd slip.',
+  medium: 'Medium: keeps its options open in the Charleston, plays toward its closest hands, calls discards and swaps jokers, with the odd slip.',
   hard: 'Hard: weighs every hand by points and by which tiles are still out there, and plays defensively late in the hand.',
 };
 const DELAYS = { slow: { think: 1300, swap: 900 }, normal: { think: 750, swap: 550 }, fast: { think: 250, swap: 200 } };
@@ -3127,9 +3307,16 @@ $('#actions').addEventListener('click', e => {
   const b = e.target.closest('[data-act]');
   if (b) onAction(b.dataset.act);
 });
+// Where the log rests when following: the newest message, from its first line
+// (a long coach tip shows its start, not its end).
+function latestTop(m) {
+  const last = m.querySelector('.entry.latest');
+  const end = m.scrollHeight - m.clientHeight;
+  return last ? Math.max(0, Math.min(end, last.offsetTop - 2)) : end;
+}
 $('#msg').addEventListener('scroll', () => {
   const m = $('#msg');
-  S.logFollow = m.scrollHeight - m.scrollTop - m.clientHeight < 12;
+  S.logFollow = m.scrollTop >= latestTop(m) - 12;
   const b = m.querySelector('.to-latest');
   if (b && S.logFollow) b.hidden = true;
 }, { passive: true });
@@ -3137,7 +3324,7 @@ $('#msg').addEventListener('click', e => {
   if (!e.target.closest('.to-latest')) return;
   const m = $('#msg');
   S.logFollow = true;
-  m.scrollTop = m.scrollHeight;
+  m.scrollTop = latestTop(m);
   e.target.closest('.to-latest').hidden = true;
 });
 $('#center').addEventListener('click', e => {
@@ -3353,7 +3540,7 @@ function render() {
   msg.innerHTML = S.log.map((e, i) => `<div class="entry${e.coach ? ' coach' : ''}${i === S.log.length - 1 ? ' latest' : ''}">${e.html}</div>`).join('')
     + '<button class="to-latest" hidden>Latest ↓</button>';
   // Follow the newest message unless the player has scrolled back to read.
-  if (S.logFollow) msg.scrollTop = msg.scrollHeight;
+  if (S.logFollow) msg.scrollTop = latestTop(msg);
   else { msg.scrollTop = keepTop; msg.querySelector('.to-latest').hidden = false; }
 
   const hints = $('#hints');
