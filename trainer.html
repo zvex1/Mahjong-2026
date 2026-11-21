@@ -599,6 +599,11 @@ html.bw .tile.xs.dot .n, html.bw .rack .tile.dot .n { width: calc(var(--w) * .86
 <style>
 /* Charleston trainer (trainer.html). Builds on style.css. */
 #drill { overflow: hidden; }
+/* Home-screen app on iPhone: iOS blurs a band just below the status bar, so
+   keep the header's text clear of it. */
+@media (display-mode: standalone) {
+  #drill > .bar { margin-top: 14px; }
+}
 a.icon.back {
   width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
   color: var(--text); text-decoration: none; font-size: 30px; line-height: 1;
