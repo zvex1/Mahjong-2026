@@ -634,12 +634,12 @@ html.bw .deal-panel { background: #fff; border: 2px solid #000; box-shadow: 0 -6
 .away.none { background: #eee6d2; color: #9a8f78; }
 
 .result { margin-top: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
-.score-row { display: flex; align-items: center; gap: 14px; }
-.score-big { font-size: 44px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; min-width: 92px; text-align: center; }
-.score-big small { font-size: 16px; color: var(--muted); font-weight: 700; }
+.score-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.score-big { font-size: 44px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+.score-big small { font-size: 18px; margin-left: 2px; color: var(--muted); font-weight: 700; }
 .score-big.s100 { color: var(--ok); } .score-big.mid { color: var(--accent); } .score-big.low { color: var(--danger); }
-.score-text { font-size: 15px; line-height: 1.4; }
-.score-text b { color: var(--accent); }
+.score-text { font-size: 22px; font-weight: 800; }
+.score-text.s100 { color: var(--ok); } .score-text.mid { color: var(--accent); } .score-text.low { color: var(--danger); }
 .result h3 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 16px 0 6px; }
 .layout { background: rgba(0, 0, 0, .2); border-radius: 12px; padding: 8px 10px; margin: 6px 0; }
 .layout .who { font-size: 13.5px; margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; }
@@ -1492,24 +1492,13 @@ function renderResult() {
   const { mine, best, score } = res;
   const tied = S.ranking.filter(r => r.d === best);
   const cls = score === 100 ? 's100' : score >= 75 ? 'mid' : 'low';
-  const name = h => `<b>${h.label}</b>`;
-  let text;
-  if (!mine) {
-    text = `That hand can't be made from these tiles. The closest, ${name(tied[0].hand)}, needs ${best}.`;
-  } else if (score === 100) {
-    text = `Spot on: ${name(mine.hand)} needs ${best} more tile${best === 1 ? '' : 's'}, the fewest of any hand.`;
-    if (tied.length > 1) text += ` ${tied.length - 1} other hand${tied.length > 2 ? 's are' : ' is'} tied with it.`;
-  } else {
-    text = `${name(mine.hand)} needs ${mine.d} tiles. The closest, ${name(tied[0].hand)}, needs ${best}`
-      + (tied.length > 1 ? ` (tied with ${tied.length - 1} other${tied.length > 2 ? 's' : ''})` : '')
-      + '.';
-  }
+  const verdict = score === 100 ? 'Spot on' : score >= 75 ? 'Close' : 'Not quite';
   // Closest hands: the top five, or every hand tied for closest if there are more.
   const top = S.ranking.slice(0, Math.max(5, tied.length));
-  let html = `<div class="score-row"><div class="score-big ${cls}">${score}<small>/100</small></div><div class="score-text">${text}</div></div>`;
+  let html = `<div class="score-row"><div class="score-big ${cls}">${score}<small>/100</small></div><div class="score-text ${cls}">${verdict}</div></div>`;
   if (mine && score < 100) html += `<h3>Your pick</h3>${layoutHTML(mine, '')}`;
   html += `<h3>Closest hands</h3>${top.map((r, i) => layoutHTML(r, `${i + 1}. ${r.hand.id === S.picked ? '★ ' : ''}`)).join('')}`;
-  html += `<p class="legend">${tileHTML(33, 'xs need')} faded = tile you still need · ${tileHTML(35, 'xs')} a joker you hold filling a spot. Tap any hand on the card below to see how your tiles fit it.</p>`;
+  html += `<p class="legend">${tileHTML(33, 'xs need')} still needed · ${tileHTML(35, 'xs')} your joker fills it. Tap any hand on the card to see how your tiles fit.</p>`;
   box.innerHTML = html;
   box.hidden = false;
 }
